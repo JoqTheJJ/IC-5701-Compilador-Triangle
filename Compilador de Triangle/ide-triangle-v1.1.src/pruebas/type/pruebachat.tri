@@ -1,0 +1,7 @@
+let
+  type Pair ~ record a: int, b: bool end;
+  var p: Pair;
+in
+  p.a := 10;
+  p.b := true
+end
