@@ -12,3 +12,5 @@
 
 # Ignorar archivos XML (opcional)
 #*.xml
+/Compilador de Triangle/Triangle/build/
+/Compilador de Triangle/Triangle/dist/
