@@ -1,0 +1,10 @@
+let
+  var x: Integer
+in
+  begin
+    x := 100;
+
+    match x of
+
+    end
+  end

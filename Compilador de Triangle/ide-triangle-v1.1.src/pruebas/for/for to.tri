@@ -1,0 +1,14 @@
+let 
+  var i : Integer 
+in
+  begin
+
+    for i := 20 downto 15 do
+      begin
+        put('x');
+        put('d')
+      end;
+
+    put(chr(10));
+    putint(i)
+  end

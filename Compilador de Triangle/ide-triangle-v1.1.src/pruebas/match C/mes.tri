@@ -1,0 +1,14 @@
+let
+  var mes: Integer
+in
+  begin
+    mes := 4;
+    match mes of
+      case 2 :
+        putint(28)
+      case 4,6,9,11 :
+        putint(30)
+      otherwise:
+        putint(31)
+    end
+  end

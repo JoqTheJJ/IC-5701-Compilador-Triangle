@@ -1,0 +1,12 @@
+let
+  var b: Boolean
+in
+  begin
+  
+    b := 7 < 2;
+    if b then
+      putint(1)
+    else
+      putint(0)
+  end
+

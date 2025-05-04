@@ -1,0 +1,22 @@
+let 
+  var i : Integer 
+in
+  begin
+    put('I');
+    put('n');
+    put('i');
+    put('c');
+    put('i');
+    put('o');
+    put(chr(10));
+
+    for i from 9 downto 0 do
+        putint(i);
+
+    put(chr(10));
+    put('F');
+    put('i');
+    put('n');
+    put('a');
+    put('l');
+  end 
