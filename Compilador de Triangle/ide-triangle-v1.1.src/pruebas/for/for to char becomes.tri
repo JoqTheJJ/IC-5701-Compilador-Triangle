@@ -1,6 +1,0 @@
-let
-  var l: Char
-in
-  for l := '0' to '9' do
-    put(l)
-

@@ -1,6 +1,0 @@
-
-  match 2 of
-    case 1 : put('1')
-    case 2,3 : put('+')
-    otherwise : put('X')
-  end

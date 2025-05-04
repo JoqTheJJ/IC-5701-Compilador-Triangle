@@ -1,9 +1,0 @@
-let
-  var n: Integer
-in
-  match 3 of
-    case 1 : put('1')
-    case 2,3 : put('+')
-    otherwise : put('X')
-  
-  end

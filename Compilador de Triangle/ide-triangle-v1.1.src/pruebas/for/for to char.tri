@@ -1,7 +1,0 @@
-let
-  var letra: Char
-
-
-in
-  for letra from 'a' to 'z' do
-    put(letra)
