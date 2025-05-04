@@ -1,0 +1,21 @@
+let
+  type fecha ~
+    record
+      dia : Integer,
+      mes : Integer
+    end;
+
+  var f: fecha
+in
+begin
+  f.dia := 3;
+  f.mes := 5;
+
+  putint(2025);
+  put('-');
+  putint(f.mes);
+  put('-');
+  putint(f.dia);  
+
+  put(chr(10))
+end
