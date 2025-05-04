@@ -1,0 +1,18 @@
+let
+  var n: Integer
+in
+  begin
+    n := 1;
+    match (n > 3) of
+      case true:
+        begin
+        put('T'); put('r'); put('u'); put('e')
+        end
+      case false:
+        begin
+        put('F'); put('a'); put('l'); put('s'); put('e')
+        end
+    end;
+    put(chr(10));
+    put('E'); put('n'); put('d')
+  end

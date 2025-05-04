@@ -1,0 +1,10 @@
+let
+  var n: Integer
+in
+  begin
+    n := 1;
+    match (n < 3) of
+      case true: putint(1)
+      case false: putint(0)
+    end
+  end

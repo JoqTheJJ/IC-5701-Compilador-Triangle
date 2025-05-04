@@ -1,0 +1,11 @@
+let
+  var n: Integer
+in
+begin
+  n := 10;
+  match n of
+    case 1 : put('1')
+    case 2,3 : put('+')
+    otherwise : put('X')
+  end;
+end

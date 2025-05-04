@@ -1,0 +1,9 @@
+let
+
+  var letra: Char
+
+in
+
+  for letra := '@' downto '0' do
+
+    put(letra)

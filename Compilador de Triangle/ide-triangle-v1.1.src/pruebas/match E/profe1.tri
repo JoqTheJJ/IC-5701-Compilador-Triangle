@@ -1,0 +1,12 @@
+let
+  var n: Integer;
+  var x: Integer
+in
+  begin
+    n := 2;
+    x := match (n < 3) of
+           case true : 1
+           otherwise : 0
+         end;
+    putint(x)
+  end
