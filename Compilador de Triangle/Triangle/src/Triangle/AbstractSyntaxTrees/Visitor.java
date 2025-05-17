@@ -28,8 +28,17 @@ public interface Visitor {
   public abstract Object visitMatchCommand(MatchCommand ast, Object o);
   // MatchExpression
   public abstract Object visitMatchExpression(MatchExpression ast, Object o);
-    
-    
+  
+  // PointerVname
+  public abstract Object visitPointerVname(PointerVname ast, Object o);
+  // PointerLiteral
+  public abstract Object visitPointerLiteral(PointerLiteral ast, Object o);
+  // PointerLiteral
+  public abstract Object visitPointerExpression(PointerExpression ast, Object o);
+  // PointerTypeDenoter
+  public abstract Object visitPointerTypeDenoter(PointerTypeDenoter ast, Object o);
+  
+  
     
 
   // Commands
