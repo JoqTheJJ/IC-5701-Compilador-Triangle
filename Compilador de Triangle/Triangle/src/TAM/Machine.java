@@ -20,6 +20,9 @@ public final class Machine {
   public final static int
     maxRoutineLevel = 7;
 
+  
+  
+  
 // WORDS AND ADDRESSES
 
 // Java has no type synonyms, so the following representations are
@@ -64,7 +67,7 @@ public final class Machine {
   public final static int
     CB = 0,
     PB = 1024,  // = upper bound of code array + 1
-    PT = 1052;  // = PB + 28
+    PT = 1052;  // = PB + 28 
 
 // REGISTER NUMBERS
 
