@@ -103,18 +103,20 @@ final class Token extends Object {
     BECOMES		= 35,
     IS			= 36,
     CARET               = 37,//caret
+    HASH                = 38,//hash
+    
 
     // brackets...
-    LPAREN		= 38,
-    RPAREN		= 39,
-    LBRACKET	        = 40,
-    RBRACKET	        = 41,
-    LCURLY		= 42,
-    RCURLY		= 43,
+    LPAREN		= 39,
+    RPAREN		= 40,
+    LBRACKET	        = 41,
+    RBRACKET	        = 42,
+    LCURLY		= 43,
+    RCURLY		= 44,
 
     // special tokens...
-    EOT			= 44,
-    ERROR		= 45;
+    EOT			= 45,
+    ERROR		= 46;
 
   private static String[] tokenTable = new String[] {
     "<int>",
@@ -156,6 +158,7 @@ final class Token extends Object {
     ":=",
     "~",
     "^", //caret
+    "#", //hash
     
     "(",
     ")",
