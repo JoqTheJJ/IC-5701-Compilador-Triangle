@@ -954,7 +954,7 @@ public final class Checker implements Visitor {
     
     //Pointer ^
     StdEnvironment.pointerType = new PointerTypeDenoter(dummyPos);
-    StdEnvironment.pointerDecl = declareStdType("^", StdEnvironment.booleanType);
+    StdEnvironment.pointerDecl = declareStdType("#", StdEnvironment.booleanType);
 
     StdEnvironment.booleanDecl = declareStdType("Boolean", StdEnvironment.booleanType);
     StdEnvironment.falseDecl = declareStdConst("false", StdEnvironment.booleanType);
