@@ -436,8 +436,42 @@ public class Interpreter {
         ST = ST - 1; // no action taken at present
         break;
       case Machine.heapAllocAddr:
+          size = data[ST - 1]; // Ocupo el espacio del objeto al inicio de la pila estatica
+          if (HP + size + 1 >= HL) { // Validar que hay espacio
+              status = failedDataStoreFull;
+          } else {
+              data[HP] = size; // Guarda un bite con el tamaño del objeto
+              data[ST - 1] = HP; // Deja en memeoria la direccion de memoria del objeto
+              HP += size + 1; // Reserva el espacio de memoria para el objeto y su bite de size
+          }
           break;
       case Machine.heapFreeAddr:
+          addr = data[ST - 1]; // Ocupo la direccion que debo limpiar en el tope de la pila
+          ST--; // Liberar memoria
+          
+          if (HT <= addr || addr < HP) { // Validacion de si el objeto esta dentro del heap dinamico
+              status = failedInvalidInstruction;
+              break;
+          }
+          
+          size = data[addr] + 1; // Obtiene el espacio del objeto
+          
+          for (int i = addr; i < HP - size; i++) { // Baja los objetos segun el size
+              data[i] = data[i + size];
+          }
+          
+          for (int i = HP - size; i < HP; i++) { // Limpia los espacios desocupados
+              data[i] = 0;
+          }
+          
+          for (int i = 0; i < pointers.size(); i++) { // Actualizar los punteros que movimos
+              int pointedAddr = data[pointers.get(i)];
+              if (addr < pointedAddr) {
+                  data[pointers.get(i)] -= size;
+              }
+          }
+          
+          HP -= size; // Liberar memoria
           break;
     }
   }
