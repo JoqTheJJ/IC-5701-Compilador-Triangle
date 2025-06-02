@@ -363,7 +363,7 @@ public Object visitMatchExpression(MatchExpression ast, Object o) {
 
     // NewCommand
     public Object visitNewCommand(NewCommand ast, Object o){
-    //TODO
+      // TODO
     return null;
     }
   

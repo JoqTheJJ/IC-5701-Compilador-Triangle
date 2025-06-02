@@ -393,20 +393,13 @@ public class Parser {
     case Token.DELETE:
     {
       acceptIt();
-      Vname vAST = parseVname(); 
+      Vname vAST = parseVname();
       finish(commandPos);
       commandAST = new DeleteCommand(vAST, commandPos);
     }
     break;
 
-    case Token.NEW:
-    {
-      acceptIt();
-      Vname vAST = parseVname();
-      finish(commandPos);
-      commandAST = new NewCommand(vAST, commandPos);
-    }
-    break;
+    
 
       
       
@@ -515,6 +508,15 @@ public class Parser {
 
       expressionAST = new MatchExpression(match, cases, otherwiseExpr, pos);
       break;
+      
+    case Token.NEW:
+    {
+      acceptIt();
+      TypeDenoter tAST = parseTypeDenoter();
+      finish(expressionPos);
+      expressionAST = new NewCommand(tAST, expressionPos);
+    }
+    break;
       
 
     default:

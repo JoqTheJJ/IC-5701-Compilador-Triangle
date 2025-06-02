@@ -176,13 +176,10 @@ public final class Checker implements Visitor {
     
   //NewCommand
     public Object visitNewCommand(NewCommand ast, Object o) {
-    TypeDenoter vType = (TypeDenoter) ast.V.visit(this, null);
+    
+    ast.type = (TypeDenoter) ast.type.visit(this, null); /* Revisar que type sea un tipo */
 
-    if (!(vType instanceof PointerTypeDenoter)) {
-      reporter.reportError("\"new\" solo puede aplicarse a variables puntero", "", ast.position);
-    }
-
-    return null;
+    return StdEnvironment.pointerType;
   }
 
 

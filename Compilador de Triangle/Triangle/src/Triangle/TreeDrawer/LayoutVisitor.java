@@ -221,7 +221,7 @@ public class LayoutVisitor implements Visitor {
 
 // NewCommand
     public Object visitNewCommand(NewCommand ast, Object obj){
-      return layoutUnary("NewCom.", ast.V);
+      return layoutUnary("NewExp.", ast.type);
     }
 
   //MatchExpression

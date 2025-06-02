@@ -2,11 +2,11 @@ package Triangle.AbstractSyntaxTrees;
 
 import Triangle.SyntacticAnalyzer.SourcePosition;
 
-public class NewCommand extends Command {
+public class NewCommand extends Expression {
 
-  public NewCommand(Vname vAST, SourcePosition thePosition) {
+  public NewCommand(TypeDenoter type, SourcePosition thePosition) {
     super(thePosition);
-    V = vAST;
+    this.type = type;
   }
 
   @Override
@@ -14,5 +14,5 @@ public class NewCommand extends Command {
     return v.visitNewCommand(this, o);
   }
 
-  public Vname V;
+  public TypeDenoter type;
 }
