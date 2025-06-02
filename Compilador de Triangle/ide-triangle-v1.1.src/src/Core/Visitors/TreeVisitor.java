@@ -68,7 +68,7 @@ import Triangle.AbstractSyntaxTrees.Case;
 import Triangle.AbstractSyntaxTrees.MatchExpression;
 import Triangle.AbstractSyntaxTrees.CaseExpression;
 import Triangle.AbstractSyntaxTrees.DeleteCommand;
-import Triangle.AbstractSyntaxTrees.NewCommand;
+import Triangle.AbstractSyntaxTrees.NewExpression;
 import Triangle.AbstractSyntaxTrees.PointerExpression;
 import Triangle.AbstractSyntaxTrees.PointerLiteral;
 import Triangle.AbstractSyntaxTrees.PointerTypeDenoter;
@@ -224,7 +224,7 @@ public class TreeVisitor implements Visitor {
     }
     
     //NewExpression
-    public Object visitNewCommand(NewCommand ast, Object obj){
+    public Object visitNewExpression(NewExpression ast, Object obj){
        ast.type.visit(this, null);
        return null;
     }
