@@ -28,7 +28,8 @@ public class Interpreter {
 
 // DATA STORE
 
-  static int[] data = new int[1024];
+  static int[] data = new int[2048];        // MOD
+  static int[] pointers = new int[1024];    // Agregado
 
 
 // DATA STORE REGISTERS AND OTHER REGISTERS
@@ -36,10 +37,11 @@ public class Interpreter {
   final static int
     CB = 0,
     SB = 0,
-    HB = 1024;  // = upper bound of data array + 1
+    HB = 1024,  // start of dynamic memory
+    HL = 2048;  // upper bound of dynamic memory + 1 // Agregado
 
   static int
-    CT, CP, ST, HT, LB, status;
+    CT, CP, ST, HT, LB, status, HP; // HP = Heap Pointer // Agregado
 
   // status values
   final static int
@@ -429,6 +431,10 @@ public class Interpreter {
       case Machine.disposeDisplacement:
         ST = ST - 1; // no action taken at present
         break;
+      case Machine.heapAllocAddr:
+          break;
+      case Machine.heapFreeAddr:
+          break;
     }
   }
 
@@ -439,10 +445,11 @@ public class Interpreter {
     int op, r, n, d, addr, index;
 
     // Initialize registers ...
-    ST = SB;
-    HT = HB;
-    LB = SB;
-    CP = CB;
+    ST = SB;    // 0
+    HT = HB;    // 1024 Crece hacia abajo
+    LB = SB;    // 0
+    CP = CB;    // 0
+    HP = HB;    // 1024 Crece hacia arriba // Agregado
     status = running;
     do {
       // Fetch instruction ...
