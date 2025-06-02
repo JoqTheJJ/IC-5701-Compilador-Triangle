@@ -81,7 +81,7 @@ import Triangle.AbstractSyntaxTrees.DeleteCommand;
 //MatchExpression
 import Triangle.AbstractSyntaxTrees.MatchExpression;
 import Triangle.AbstractSyntaxTrees.CaseExpression;
-import Triangle.AbstractSyntaxTrees.NewCommand;
+import Triangle.AbstractSyntaxTrees.NewExpression;
 import Triangle.AbstractSyntaxTrees.PointerExpression;
 import Triangle.AbstractSyntaxTrees.PointerLiteral;
 import Triangle.AbstractSyntaxTrees.PointerTypeDenoter;
@@ -219,8 +219,8 @@ public class LayoutVisitor implements Visitor {
       return layoutUnary("DeleteCom.", ast.V);
     }
 
-// NewCommand
-    public Object visitNewCommand(NewCommand ast, Object obj){
+// NewExpression
+    public Object visitNewExpression(NewExpression ast, Object obj){
       return layoutUnary("NewExp.", ast.type);
     }
 

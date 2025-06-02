@@ -175,7 +175,7 @@ public final class Checker implements Visitor {
   }
     
   //NewCommand
-    public Object visitNewCommand(NewCommand ast, Object o) {
+    public Object visitNewExpression(NewExpression ast, Object o) {
     
     ast.type = (TypeDenoter) ast.type.visit(this, null); /* Revisar que type sea un tipo */
 

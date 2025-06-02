@@ -514,7 +514,7 @@ public class Parser {
       acceptIt();
       TypeDenoter tAST = parseTypeDenoter();
       finish(expressionPos);
-      expressionAST = new NewCommand(tAST, expressionPos);
+      expressionAST = new NewExpression(tAST, expressionPos);
     }
     break;
       
