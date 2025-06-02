@@ -64,8 +64,8 @@ public final class Machine {
   public final static int
     CB = 0,
     PB = 1024,  // = upper bound of code array + 1
-    PT = 1052;  // = PB + 28
-
+    PT = 1054;  // = PB + 28 + 2  // MOD
+  
 // REGISTER NUMBERS
 
   public final static int
@@ -100,6 +100,7 @@ public final class Machine {
 
     falseRep = 0,
     trueRep = 1,
+    nilRep = 99999,
     maxintRep = 32767;
 
 
@@ -133,6 +134,8 @@ public final class Machine {
     getintDisplacement = 25,
     putintDisplacement = 26,
     newDisplacement = 27,
-    disposeDisplacement = 28;
-
+    disposeDisplacement = 28,
+    heapAllocAddr = 29,         // AGREGADO
+    heapFreeAddr = 30;          // AGREGADO
+    
 }

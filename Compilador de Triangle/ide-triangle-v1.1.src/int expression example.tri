@@ -1,0 +1,7 @@
+let
+  var x: Integer
+in
+begin
+  x := 3 + 4 + 5 + 6;
+  putint(x)
+end

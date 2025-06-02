@@ -106,7 +106,8 @@ final class Token extends Object {
     BECOMES		= 38,
     IS			= 39,
     CARET               = 40, //caret
-
+    // Agregar Hash aqui :D
+    
     // brackets...
     LPAREN		= 41,
     RPAREN		= 42,
@@ -162,6 +163,7 @@ final class Token extends Object {
     ":=",
     "~",
     "^", //caret
+    "#", //hash
     
     "(",
     ")",

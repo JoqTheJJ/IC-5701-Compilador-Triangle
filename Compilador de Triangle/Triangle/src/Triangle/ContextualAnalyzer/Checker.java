@@ -161,6 +161,33 @@ public final class Checker implements Visitor {
   return null;
   }
   
+  //DeleteCommand
+    public Object visitDeleteCommand(DeleteCommand ast, Object o) {
+  // Verifica que la variable exista y obtén su tipo
+    TypeDenoter vType = (TypeDenoter) ast.V.visit(this, null);
+
+    // Verifica que sea un puntero
+    if (!(vType instanceof PointerTypeDenoter)) {
+      reporter.reportError("\"delete\" solo puede aplicarse a variables puntero", "", ast.position);
+    }
+
+    return null;
+  }
+    
+  //NewCommand
+    public Object visitNewCommand(NewCommand ast, Object o) {
+    TypeDenoter vType = (TypeDenoter) ast.V.visit(this, null);
+
+    if (!(vType instanceof PointerTypeDenoter)) {
+      reporter.reportError("\"new\" solo puede aplicarse a variables puntero", "", ast.position);
+    }
+
+    return null;
+  }
+
+
+
+  
   //MatchExpression 
   public Object visitMatchExpression(MatchExpression  ast, Object o) {
     TypeDenoter exprType = (TypeDenoter) ast.E.visit(this, null);
@@ -212,6 +239,39 @@ public final class Checker implements Visitor {
       ast.type = StdEnvironment.pointerType;
       return ast.type;
   }
+  
+  public Object visitPointerLiteral(PointerLiteral ast, Object o) {
+    // Por ahora tratamos todos los literales puntero como del tipo puntero genérico
+    return StdEnvironment.pointerType;
+}
+
+public Object visitPointerVname(PointerVname ast, Object o) {
+    Declaration binding = idTable.retrieve(ast.I.spelling);
+
+    if (binding == null) {
+        reporter.reportError("\"%\" is not declared", ast.I.spelling, ast.position);
+        ast.type = StdEnvironment.errorType;
+    } else if (binding instanceof VarDeclaration) {
+        VarDeclaration varDecl = (VarDeclaration) binding;
+        ast.type = varDecl.T;
+
+        if (!(ast.type instanceof PointerTypeDenoter)) {
+            reporter.reportError("Variable \"%\" is not a pointer", ast.I.spelling, ast.position);
+            ast.type = StdEnvironment.errorType;
+        }
+    } else {
+        reporter.reportError("\"%\" is not a variable", ast.I.spelling, ast.position);
+        ast.type = StdEnvironment.errorType;
+    }
+
+    return ast.type;
+}
+
+
+public Object visitPointerTypeDenoter(PointerTypeDenoter ast, Object o) {
+    return StdEnvironment.pointerType;
+}
+
 
   public Object visitArrayExpression(ArrayExpression ast, Object o) {
     TypeDenoter elemType = (TypeDenoter) ast.AA.visit(this, null);
@@ -954,7 +1014,8 @@ public final class Checker implements Visitor {
     
     //Pointer ^
     StdEnvironment.pointerType = new PointerTypeDenoter(dummyPos);
-    StdEnvironment.pointerDecl = declareStdType("^", StdEnvironment.booleanType);
+    StdEnvironment.pointerDecl = declareStdType("#", StdEnvironment.pointerType);
+    StdEnvironment.nilDecl = declareStdConst("nil", StdEnvironment.pointerType);
 
     StdEnvironment.booleanDecl = declareStdType("Boolean", StdEnvironment.booleanType);
     StdEnvironment.falseDecl = declareStdConst("false", StdEnvironment.booleanType);
@@ -996,4 +1057,19 @@ public final class Checker implements Visitor {
     StdEnvironment.unequalDecl = declareStdBinaryOp("\\=", StdEnvironment.anyType, StdEnvironment.anyType, StdEnvironment.booleanType);
 
   }
+
+    @Override
+    public Object visitPointerVname(PointerVname pv, Object o) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public Object visitPointerLiteral(PointerLiteral pl, Object o) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public Object visitPointerTypeDenoter(PointerTypeDenoter ptd, Object o) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

@@ -19,6 +19,10 @@ import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+// Imports Agregados
+import java.util.Arrays;
+import java.util.List;
+import java.util.ArrayList;
 
 public class Interpreter {
 
@@ -28,7 +32,8 @@ public class Interpreter {
 
 // DATA STORE
 
-  static int[] data = new int[1024];
+  static int[] data = new int[2048];                    // MOD
+  static List<Integer> pointers = new ArrayList<>();    // AGREGADO
 
 
 // DATA STORE REGISTERS AND OTHER REGISTERS
@@ -36,10 +41,11 @@ public class Interpreter {
   final static int
     CB = 0,
     SB = 0,
-    HB = 1024;  // = upper bound of data array + 1
+    HB = 1024,  // start of dynamic memory
+    HL = 2048;  // upper bound of dynamic memory + 1 // Agregado
 
   static int
-    CT, CP, ST, HT, LB, status;
+    CT, CP, ST, HT, LB, status, HP; // HP = Heap Pointer // Agregado
 
   // status values
   final static int
@@ -429,6 +435,44 @@ public class Interpreter {
       case Machine.disposeDisplacement:
         ST = ST - 1; // no action taken at present
         break;
+      case Machine.heapAllocAddr:
+          size = data[ST - 1]; // Ocupo el espacio del objeto al inicio de la pila estatica
+          if (HP + size + 1 >= HL) { // Validar que hay espacio
+              status = failedDataStoreFull;
+          } else {
+              data[HP] = size; // Guarda un bite con el tamaño del objeto
+              data[ST - 1] = HP; // Deja en memeoria la direccion de memoria del objeto
+              HP += size + 1; // Reserva el espacio de memoria para el objeto y su bite de size
+          }
+          break;
+      case Machine.heapFreeAddr:
+          addr = data[ST - 1]; // Ocupo la direccion que debo limpiar en el tope de la pila
+          ST--; // Liberar memoria
+          
+          if (HT <= addr || addr < HP) { // Validacion de si el objeto esta dentro del heap dinamico
+              status = failedInvalidInstruction;
+              break;
+          }
+          
+          size = data[addr] + 1; // Obtiene el espacio del objeto
+          
+          for (int i = addr; i < HP - size; i++) { // Baja los objetos segun el size
+              data[i] = data[i + size];
+          }
+          
+          for (int i = HP - size; i < HP; i++) { // Limpia los espacios desocupados
+              data[i] = 0;
+          }
+          
+          for (int i = 0; i < pointers.size(); i++) { // Actualizar los punteros que movimos
+              int pointedAddr = data[pointers.get(i)];
+              if (addr < pointedAddr) {
+                  data[pointers.get(i)] -= size;
+              }
+          }
+          
+          HP -= size; // Liberar memoria
+          break;
     }
   }
 
@@ -439,10 +483,11 @@ public class Interpreter {
     int op, r, n, d, addr, index;
 
     // Initialize registers ...
-    ST = SB;
-    HT = HB;
-    LB = SB;
-    CP = CB;
+    ST = SB;    // 0
+    HT = HB;    // 1024 Crece hacia abajo
+    LB = SB;    // 0
+    CP = CB;    // 0
+    HP = HB;    // 1024 Crece hacia arriba // Agregado
     status = running;
     do {
       // Fetch instruction ...

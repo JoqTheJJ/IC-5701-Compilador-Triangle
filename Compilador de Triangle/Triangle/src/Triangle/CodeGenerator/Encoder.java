@@ -118,7 +118,18 @@ import Triangle.AbstractSyntaxTrees.Case;
 //Match Expression
 import Triangle.AbstractSyntaxTrees.MatchExpression;
 import Triangle.AbstractSyntaxTrees.CaseExpression;
+import Triangle.AbstractSyntaxTrees.DeleteCommand;
+import Triangle.AbstractSyntaxTrees.NewCommand;
+import Triangle.AbstractSyntaxTrees.PointerExpression;
+import Triangle.AbstractSyntaxTrees.PointerLiteral;
+import Triangle.AbstractSyntaxTrees.PointerTypeDenoter;
+import Triangle.AbstractSyntaxTrees.PointerVname;
 
+//Pointer 
+import Triangle.AbstractSyntaxTrees.PointerExpression;
+import Triangle.AbstractSyntaxTrees.PointerLiteral;
+import Triangle.AbstractSyntaxTrees.PointerTypeDenoter;
+import Triangle.AbstractSyntaxTrees.PointerVname;
 
 public final class Encoder implements Visitor {
 
@@ -344,6 +355,17 @@ public Object visitMatchExpression(MatchExpression ast, Object o) {
     return Integer.valueOf(1);
 }
 
+    // DeleteCommand
+    public Object visitDeleteCommand(DeleteCommand ast, Object o) {
+      // TODO: Generar código para liberar memoria del puntero (heap)
+      return null;
+    }
+
+    // NewCommand
+    public Object visitNewCommand(NewCommand ast, Object o){
+    //TODO
+    return null;
+    }
   
    
   // Expressions
@@ -351,6 +373,27 @@ public Object visitMatchExpression(MatchExpression ast, Object o) {
     ast.type.visit(this, null);
     return ast.AA.visit(this, o);
   }
+  
+  //Pointer 
+  public Object visitPointerLiteral(PointerLiteral ast, Object o) {
+   return null;
+}
+
+public Object visitPointerVname(PointerVname ast, Object o) {
+   
+
+    return null;
+}
+
+public Object visitPointerTypeDenoter(PointerTypeDenoter ast, Object o) {
+    // Suponiendo que un puntero ocupa una palabra
+    return 1;
+}
+
+public Object visitPointerExpression(PointerExpression ast, Object o) {
+    // Suponiendo que un puntero ocupa una palabra
+    return null;
+}
 
   public Object visitBinaryExpression(BinaryExpression ast, Object o) {
     Frame frame = (Frame) o;
@@ -959,6 +1002,8 @@ public Object visitMatchExpression(MatchExpression ast, Object o) {
 
   private final void elaborateStdEnvironment() {
     tableDetailsReqd = false;
+    elaborateStdConst(StdEnvironment.nilDecl, Machine.nilRep); //nil value assignment
+    
     elaborateStdConst(StdEnvironment.falseDecl, Machine.falseRep);
     elaborateStdConst(StdEnvironment.trueDecl, Machine.trueRep);
     elaborateStdPrimRoutine(StdEnvironment.notDecl, Machine.notDisplacement);
@@ -1185,4 +1230,24 @@ public Object visitMatchExpression(MatchExpression ast, Object o) {
       }
     }
   }
+
+    @Override
+    public Object visitPointerVname(PointerVname pv, Object o) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public Object visitPointerLiteral(PointerLiteral pl, Object o) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public Object visitPointerExpression(PointerExpression pe, Object o) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public Object visitPointerTypeDenoter(PointerTypeDenoter ptd, Object o) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

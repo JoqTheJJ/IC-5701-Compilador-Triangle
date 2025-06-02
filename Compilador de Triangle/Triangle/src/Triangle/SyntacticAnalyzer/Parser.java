@@ -206,6 +206,7 @@ public class Parser {
 
     SourcePosition commandPos = new SourcePosition();
     start(commandPos);
+    System.out.println("Token recibido: " + currentToken.spelling + " (kind: " + currentToken.kind + ")");
 
     switch (currentToken.kind) {
 
@@ -389,7 +390,24 @@ public class Parser {
       break;
     }
       
-      
+    case Token.DELETE:
+    {
+      acceptIt();
+      Vname vAST = parseVname(); 
+      finish(commandPos);
+      commandAST = new DeleteCommand(vAST, commandPos);
+    }
+    break;
+
+    case Token.NEW:
+    {
+      acceptIt();
+      Vname vAST = parseVname();
+      finish(commandPos);
+      commandAST = new NewCommand(vAST, commandPos);
+    }
+    break;
+
       
       
       
