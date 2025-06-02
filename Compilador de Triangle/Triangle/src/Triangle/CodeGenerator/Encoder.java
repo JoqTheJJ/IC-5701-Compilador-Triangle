@@ -118,6 +118,12 @@ import Triangle.AbstractSyntaxTrees.Case;
 //Match Expression
 import Triangle.AbstractSyntaxTrees.MatchExpression;
 import Triangle.AbstractSyntaxTrees.CaseExpression;
+import Triangle.AbstractSyntaxTrees.DeleteCommand;
+import Triangle.AbstractSyntaxTrees.NewCommand;
+import Triangle.AbstractSyntaxTrees.PointerExpression;
+import Triangle.AbstractSyntaxTrees.PointerLiteral;
+import Triangle.AbstractSyntaxTrees.PointerTypeDenoter;
+import Triangle.AbstractSyntaxTrees.PointerVname;
 
 //Pointer 
 import Triangle.AbstractSyntaxTrees.PointerExpression;
@@ -349,6 +355,17 @@ public Object visitMatchExpression(MatchExpression ast, Object o) {
     return Integer.valueOf(1);
 }
 
+    // DeleteCommand
+    public Object visitDeleteCommand(DeleteCommand ast, Object o) {
+      // TODO: Generar código para liberar memoria del puntero (heap)
+      return null;
+    }
+
+    // NewCommand
+    public Object visitNewCommand(NewCommand ast, Object o){
+    //TODO
+    return null;
+    }
   
    
   // Expressions
@@ -1213,4 +1230,24 @@ public Object visitPointerExpression(PointerExpression ast, Object o) {
       }
     }
   }
+
+    @Override
+    public Object visitPointerVname(PointerVname pv, Object o) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public Object visitPointerLiteral(PointerLiteral pl, Object o) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public Object visitPointerExpression(PointerExpression pe, Object o) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public Object visitPointerTypeDenoter(PointerTypeDenoter ptd, Object o) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

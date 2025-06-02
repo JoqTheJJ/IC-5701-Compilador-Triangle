@@ -161,6 +161,33 @@ public final class Checker implements Visitor {
   return null;
   }
   
+  //DeleteCommand
+    public Object visitDeleteCommand(DeleteCommand ast, Object o) {
+  // Verifica que la variable exista y obtén su tipo
+    TypeDenoter vType = (TypeDenoter) ast.V.visit(this, null);
+
+    // Verifica que sea un puntero
+    if (!(vType instanceof PointerTypeDenoter)) {
+      reporter.reportError("\"delete\" solo puede aplicarse a variables puntero", "", ast.position);
+    }
+
+    return null;
+  }
+    
+  //NewCommand
+    public Object visitNewCommand(NewCommand ast, Object o) {
+    TypeDenoter vType = (TypeDenoter) ast.V.visit(this, null);
+
+    if (!(vType instanceof PointerTypeDenoter)) {
+      reporter.reportError("\"new\" solo puede aplicarse a variables puntero", "", ast.position);
+    }
+
+    return null;
+  }
+
+
+
+  
   //MatchExpression 
   public Object visitMatchExpression(MatchExpression  ast, Object o) {
     TypeDenoter exprType = (TypeDenoter) ast.E.visit(this, null);
@@ -1030,4 +1057,19 @@ public Object visitPointerTypeDenoter(PointerTypeDenoter ast, Object o) {
     StdEnvironment.unequalDecl = declareStdBinaryOp("\\=", StdEnvironment.anyType, StdEnvironment.anyType, StdEnvironment.booleanType);
 
   }
+
+    @Override
+    public Object visitPointerVname(PointerVname pv, Object o) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public Object visitPointerLiteral(PointerLiteral pl, Object o) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public Object visitPointerTypeDenoter(PointerTypeDenoter ptd, Object o) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }
