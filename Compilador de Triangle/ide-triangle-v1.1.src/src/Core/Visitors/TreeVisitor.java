@@ -223,9 +223,9 @@ public class TreeVisitor implements Visitor {
        return null;
     }
     
-    //NewCommand
+    //NewExpression
     public Object visitNewCommand(NewCommand ast, Object obj){
-       ast.V.visit(this, null);
+       ast.type.visit(this, null);
        return null;
     }
     
