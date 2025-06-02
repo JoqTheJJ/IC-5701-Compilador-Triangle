@@ -206,6 +206,12 @@ public final class Checker implements Visitor {
 
   // Returns the TypeDenoter denoting the type of the expression. Does
   // not use the given object.
+  
+  //PointerExpression
+  public Object visitPointerExpression(PointerExpression ast, Object o){
+      ast.type = StdEnvironment.pointerType;
+      return ast.type;
+  }
 
   public Object visitArrayExpression(ArrayExpression ast, Object o) {
     TypeDenoter elemType = (TypeDenoter) ast.AA.visit(this, null);
@@ -945,6 +951,10 @@ public final class Checker implements Visitor {
     StdEnvironment.charType = new CharTypeDenoter(dummyPos);
     StdEnvironment.anyType = new AnyTypeDenoter(dummyPos);
     StdEnvironment.errorType = new ErrorTypeDenoter(dummyPos);
+    
+    //Pointer ^
+    StdEnvironment.pointerType = new PointerTypeDenoter(dummyPos);
+    StdEnvironment.pointerDecl = declareStdType("#", StdEnvironment.booleanType);
 
     StdEnvironment.booleanDecl = declareStdType("Boolean", StdEnvironment.booleanType);
     StdEnvironment.falseDecl = declareStdConst("false", StdEnvironment.booleanType);
