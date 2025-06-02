@@ -35,7 +35,7 @@ public final class StdEnvironment {
   // These are small ASTs representing "declarations" of standard entities.
 
   public static ConstDeclaration
-    falseDecl, trueDecl, maxintDecl;
+    falseDecl, trueDecl, nilDecl, maxintDecl;
 
   public static UnaryOperatorDeclaration
     notDecl;

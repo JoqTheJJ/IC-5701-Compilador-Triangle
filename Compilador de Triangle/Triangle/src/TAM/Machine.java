@@ -100,6 +100,7 @@ public final class Machine {
 
     falseRep = 0,
     trueRep = 1,
+    nilRep = 99999,
     maxintRep = 32767;
 
 

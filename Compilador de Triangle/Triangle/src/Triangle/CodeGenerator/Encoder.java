@@ -985,6 +985,8 @@ public Object visitPointerExpression(PointerExpression ast, Object o) {
 
   private final void elaborateStdEnvironment() {
     tableDetailsReqd = false;
+    elaborateStdConst(StdEnvironment.nilDecl, Machine.nilRep); //nil value assignment
+    
     elaborateStdConst(StdEnvironment.falseDecl, Machine.falseRep);
     elaborateStdConst(StdEnvironment.trueDecl, Machine.trueRep);
     elaborateStdPrimRoutine(StdEnvironment.notDecl, Machine.notDisplacement);
