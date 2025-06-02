@@ -70,6 +70,7 @@ import Triangle.AbstractSyntaxTrees.Case;
 import Triangle.AbstractSyntaxTrees.MatchExpression;
 import Triangle.AbstractSyntaxTrees.CaseExpression;
 import Triangle.AbstractSyntaxTrees.DeleteCommand;
+import Triangle.AbstractSyntaxTrees.NewCommand;
 import Triangle.AbstractSyntaxTrees.PointerExpression;
 import Triangle.AbstractSyntaxTrees.PointerLiteral;
 import Triangle.AbstractSyntaxTrees.PointerTypeDenoter;
@@ -233,6 +234,11 @@ public class TableVisitor implements Visitor {
         return null;
     }
     
+    //NewCommand
+    public Object visitNewCommand(NewCommand ast, Object obj){
+        ast.V.visit(this, null);
+        return null;
+    }
     //
   // </editor-fold>
 

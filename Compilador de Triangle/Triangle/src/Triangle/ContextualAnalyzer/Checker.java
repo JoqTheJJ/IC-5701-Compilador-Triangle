@@ -171,9 +171,21 @@ public final class Checker implements Visitor {
       reporter.reportError("\"delete\" solo puede aplicarse a variables puntero", "", ast.position);
     }
 
-  return null;
-}
+    return null;
+  }
     
+  //NewCommand
+    public Object visitNewCommand(NewCommand ast, Object o) {
+    TypeDenoter vType = (TypeDenoter) ast.V.visit(this, null);
+
+    if (!(vType instanceof PointerTypeDenoter)) {
+      reporter.reportError("\"new\" solo puede aplicarse a variables puntero", "", ast.position);
+    }
+
+    return null;
+  }
+
+
 
   
   //MatchExpression 

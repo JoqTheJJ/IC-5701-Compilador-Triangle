@@ -119,6 +119,7 @@ import Triangle.AbstractSyntaxTrees.Case;
 import Triangle.AbstractSyntaxTrees.MatchExpression;
 import Triangle.AbstractSyntaxTrees.CaseExpression;
 import Triangle.AbstractSyntaxTrees.DeleteCommand;
+import Triangle.AbstractSyntaxTrees.NewCommand;
 import Triangle.AbstractSyntaxTrees.PointerExpression;
 import Triangle.AbstractSyntaxTrees.PointerLiteral;
 import Triangle.AbstractSyntaxTrees.PointerTypeDenoter;
@@ -349,12 +350,17 @@ public Object visitMatchExpression(MatchExpression ast, Object o) {
     return Integer.valueOf(1);
 }
 
-// DeleteCommand
-public Object visitDeleteCommand(DeleteCommand ast, Object o) {
-  // TODO: Generar código para liberar memoria del puntero (heap)
-  return null;
-}
+    // DeleteCommand
+    public Object visitDeleteCommand(DeleteCommand ast, Object o) {
+      // TODO: Generar código para liberar memoria del puntero (heap)
+      return null;
+    }
 
+    // NewCommand
+    public Object visitNewCommand(NewCommand ast, Object o){
+    //TODO
+    return null;
+    }
   
    
   // Expressions
