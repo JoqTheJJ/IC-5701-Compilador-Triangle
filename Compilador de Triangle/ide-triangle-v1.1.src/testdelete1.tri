@@ -1,0 +1,5 @@
+let
+  var p : ^Integer;  -- Declaración de un puntero a entero
+in
+  delete p;
+end

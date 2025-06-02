@@ -389,7 +389,15 @@ public class Parser {
       break;
     }
       
-      
+    case Token.DELETE:
+    {
+      acceptIt();
+      Vname vAST = parseVname(); 
+      finish(commandPos);
+      commandAST = new DeleteCommand(vAST, commandPos);
+    }
+    break;
+
       
       
       
