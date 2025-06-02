@@ -19,6 +19,10 @@ import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+// Imports Agregados
+import java.util.Arrays;
+import java.util.List;
+import java.util.ArrayList;
 
 public class Interpreter {
 
@@ -28,8 +32,8 @@ public class Interpreter {
 
 // DATA STORE
 
-  static int[] data = new int[2048];        // MOD
-  static int[] pointers = new int[1024];    // Agregado
+  static int[] data = new int[2048];                    // MOD
+  static List<Integer> pointers = new ArrayList<>();    // AGREGADO
 
 
 // DATA STORE REGISTERS AND OTHER REGISTERS
