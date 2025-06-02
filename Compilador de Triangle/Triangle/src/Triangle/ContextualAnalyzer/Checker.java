@@ -212,6 +212,39 @@ public final class Checker implements Visitor {
       ast.type = StdEnvironment.pointerType;
       return ast.type;
   }
+  
+  public Object visitPointerLiteral(PointerLiteral ast, Object o) {
+    // Por ahora tratamos todos los literales puntero como del tipo puntero genérico
+    return StdEnvironment.pointerType;
+}
+
+public Object visitPointerVname(PointerVname ast, Object o) {
+    Declaration binding = idTable.retrieve(ast.I.spelling);
+
+    if (binding == null) {
+        reporter.reportError("\"%\" is not declared", ast.I.spelling, ast.position);
+        ast.type = StdEnvironment.errorType;
+    } else if (binding instanceof VarDeclaration) {
+        VarDeclaration varDecl = (VarDeclaration) binding;
+        ast.type = varDecl.T;
+
+        if (!(ast.type instanceof PointerTypeDenoter)) {
+            reporter.reportError("Variable \"%\" is not a pointer", ast.I.spelling, ast.position);
+            ast.type = StdEnvironment.errorType;
+        }
+    } else {
+        reporter.reportError("\"%\" is not a variable", ast.I.spelling, ast.position);
+        ast.type = StdEnvironment.errorType;
+    }
+
+    return ast.type;
+}
+
+
+public Object visitPointerTypeDenoter(PointerTypeDenoter ast, Object o) {
+    return StdEnvironment.pointerType;
+}
+
 
   public Object visitArrayExpression(ArrayExpression ast, Object o) {
     TypeDenoter elemType = (TypeDenoter) ast.AA.visit(this, null);

@@ -119,6 +119,11 @@ import Triangle.AbstractSyntaxTrees.Case;
 import Triangle.AbstractSyntaxTrees.MatchExpression;
 import Triangle.AbstractSyntaxTrees.CaseExpression;
 
+//Pointer 
+import Triangle.AbstractSyntaxTrees.PointerExpression;
+import Triangle.AbstractSyntaxTrees.PointerLiteral;
+import Triangle.AbstractSyntaxTrees.PointerTypeDenoter;
+import Triangle.AbstractSyntaxTrees.PointerVname;
 
 public final class Encoder implements Visitor {
 
@@ -351,6 +356,27 @@ public Object visitMatchExpression(MatchExpression ast, Object o) {
     ast.type.visit(this, null);
     return ast.AA.visit(this, o);
   }
+  
+  //Pointer 
+  public Object visitPointerLiteral(PointerLiteral ast, Object o) {
+   return null;
+}
+
+public Object visitPointerVname(PointerVname ast, Object o) {
+   
+
+    return null;
+}
+
+public Object visitPointerTypeDenoter(PointerTypeDenoter ast, Object o) {
+    // Suponiendo que un puntero ocupa una palabra
+    return 1;
+}
+
+public Object visitPointerExpression(PointerExpression ast, Object o) {
+    // Suponiendo que un puntero ocupa una palabra
+    return null;
+}
 
   public Object visitBinaryExpression(BinaryExpression ast, Object o) {
     Frame frame = (Frame) o;

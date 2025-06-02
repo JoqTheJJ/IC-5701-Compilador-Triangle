@@ -80,6 +80,12 @@ import Triangle.AbstractSyntaxTrees.Case;
 import Triangle.AbstractSyntaxTrees.MatchExpression;
 import Triangle.AbstractSyntaxTrees.CaseExpression;
 
+//Pointer 
+import Triangle.AbstractSyntaxTrees.PointerExpression;
+import Triangle.AbstractSyntaxTrees.PointerLiteral;
+import Triangle.AbstractSyntaxTrees.PointerTypeDenoter;
+import Triangle.AbstractSyntaxTrees.PointerVname;
+
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
 import Triangle.AbstractSyntaxTrees.SequentialDeclaration;
 import Triangle.AbstractSyntaxTrees.SimpleTypeDenoter;
@@ -251,6 +257,27 @@ public class LayoutVisitor implements Visitor {
   public Object visitArrayExpression(ArrayExpression ast, Object obj) {
     return layoutUnary("ArrayExpr.", ast.AA);
   }
+  
+public Object visitPointerTypeDenoter(PointerTypeDenoter ast, Object obj) {
+    // Suponiendo que un puntero ocupa una palabra
+    return layoutNullary("pointer");
+}
+
+ public Object visitPointerExpression(PointerExpression ast, Object obj) {
+    return layoutUnary("PonterExpress.", ast.PL);
+  }
+ 
+   
+ public Object visitPointerLiteral(PointerLiteral ast, Object obj) {
+    // Suponiendo que un puntero ocupa una palabra
+    return layoutNullary(ast.spelling);
+}
+ 
+  public Object visitPointerVname(PointerVname ast, Object obj) {
+    return layoutUnary("PonterExpress.", ast.I);
+  }
+ 
+  
 
   public Object visitBinaryExpression(BinaryExpression ast, Object obj) {
     return layoutTernary("Bin.Expr.", ast.E1, ast.O, ast.E2);

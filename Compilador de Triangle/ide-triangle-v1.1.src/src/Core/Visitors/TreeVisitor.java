@@ -68,6 +68,10 @@ import Triangle.AbstractSyntaxTrees.Case;
 import Triangle.AbstractSyntaxTrees.MatchExpression;
 import Triangle.AbstractSyntaxTrees.CaseExpression;
 
+import Triangle.AbstractSyntaxTrees.PointerExpression;
+import Triangle.AbstractSyntaxTrees.PointerLiteral;
+import Triangle.AbstractSyntaxTrees.PointerTypeDenoter;
+import Triangle.AbstractSyntaxTrees.PointerVname;
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
 import Triangle.AbstractSyntaxTrees.SequentialDeclaration;
 import Triangle.AbstractSyntaxTrees.SimpleTypeDenoter;
@@ -257,6 +261,10 @@ public class TreeVisitor implements Visitor {
     public Object visitVnameExpression(VnameExpression ast, Object obj) {
         return(createUnary("Vname Expression", ast.V));
     }
+    
+    public Object visitPointerExpression(PointerExpression ast, Object obj) {
+        return(createUnary("Pointer Expression", ast.PL));
+    }
     // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc=" Declarations ">
@@ -415,6 +423,11 @@ public class TreeVisitor implements Visitor {
     public Object visitSingleFieldTypeDenoter(SingleFieldTypeDenoter ast, Object obj) {
         return(createBinary("Single Field Type Denoter", ast.I, ast.T));
     }
+    
+    public Object visitPointerTypeDenoter(PointerTypeDenoter ast, Object obj) { 
+      return(createNullary("Pointer"));
+  }
+    
     // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc=" Literals, Identifiers and Operators ">
@@ -434,6 +447,10 @@ public class TreeVisitor implements Visitor {
     public Object visitOperator(Operator ast, Object obj) {
         return(createNullary(ast.spelling));
     }
+    
+    public Object visitPointerLiteral(PointerLiteral ast, Object obj) { 
+      return(createNullary(ast.spelling));
+  }
     // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc=" Values or Variable Names ">
@@ -453,6 +470,11 @@ public class TreeVisitor implements Visitor {
     public Object visitProgram(Program ast, Object obj) {
         return(createUnary("Program", ast.C));
     }
+    
+    public Object visitPointerVname(PointerVname ast, Object obj) {      
+      return(createUnary("PointerVname", ast.I));
+  }
+    
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc=" Tree Creation Methods ">

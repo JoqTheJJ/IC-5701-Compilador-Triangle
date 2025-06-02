@@ -97,6 +97,10 @@ import Triangle.CodeGenerator.TypeRepresentation;
 import Triangle.CodeGenerator.UnknownAddress;
 import Triangle.CodeGenerator.UnknownRoutine;
 import Triangle.CodeGenerator.UnknownValue;
+import Triangle.AbstractSyntaxTrees.PointerExpression;
+import Triangle.AbstractSyntaxTrees.PointerLiteral;
+import Triangle.AbstractSyntaxTrees.PointerTypeDenoter;
+import Triangle.AbstractSyntaxTrees.PointerVname;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -290,6 +294,12 @@ public class TableVisitor implements Visitor {
   
   public Object visitVnameExpression(VnameExpression ast, Object o) { 
       ast.V.visit(this, null);
+      
+      return(null);
+  }
+ 
+  public Object visitPointerExpression(PointerExpression ast, Object obj) { 
+      ast.PL.visit(this, null);
       
       return(null);
   }
@@ -613,6 +623,10 @@ public class TableVisitor implements Visitor {
       return(null);
   }
   
+  public Object visitPointerTypeDenoter(PointerTypeDenoter ast, Object obj) { 
+      return(null);
+  }
+  
   // </editor-fold>
 
   // <editor-fold defaultstate="collapsed" desc=" Literals, Identifiers and Operators ">
@@ -634,6 +648,11 @@ public class TableVisitor implements Visitor {
   
       return(null);
   }
+  
+  public Object visitPointerLiteral(PointerLiteral ast, Object obj) { 
+      return(ast.spelling);
+  }
+  
   // </editor-fold>
 
   // <editor-fold defaultstate="collapsed" desc=" Values or Variable Names ">
@@ -655,6 +674,13 @@ public class TableVisitor implements Visitor {
       ast.E.visit(this, null);
       ast.V.visit(this, null);
   
+      return(null);
+  }
+  
+   //visitPointerVname
+  public Object visitPointerVname(PointerVname ast, Object obj) { 
+      ast.I.visit(this, null);
+      
       return(null);
   }
   // </editor-fold>
