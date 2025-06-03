@@ -147,7 +147,7 @@ public class Parser {
     PointerLiteral PL = null;
     
     previousTokenPosition = currentToken.position;    
-    PL = new PointerLiteral("nil", previousTokenPosition);
+    PL = new PointerLiteral("99999", previousTokenPosition);
     
     return PL;
   }
