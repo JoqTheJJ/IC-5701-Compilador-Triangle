@@ -81,7 +81,7 @@ import Triangle.AbstractSyntaxTrees.DeleteCommand;
 //MatchExpression
 import Triangle.AbstractSyntaxTrees.MatchExpression;
 import Triangle.AbstractSyntaxTrees.CaseExpression;
-import Triangle.AbstractSyntaxTrees.NewCommand;
+import Triangle.AbstractSyntaxTrees.NewExpression;
 import Triangle.AbstractSyntaxTrees.PointerExpression;
 import Triangle.AbstractSyntaxTrees.PointerLiteral;
 import Triangle.AbstractSyntaxTrees.PointerTypeDenoter;
@@ -219,9 +219,9 @@ public class LayoutVisitor implements Visitor {
       return layoutUnary("DeleteCom.", ast.V);
     }
 
-// NewCommand
-    public Object visitNewCommand(NewCommand ast, Object obj){
-      return layoutUnary("NewCom.", ast.V);
+// NewExpression
+    public Object visitNewExpression(NewExpression ast, Object obj){
+      return layoutUnary("NewExp.", ast.type);
     }
 
   //MatchExpression
@@ -712,25 +712,4 @@ public Object visitPointerTypeDenoter(PointerTypeDenoter ast, Object obj) {
 
     return r;
   }
-
-    @Override
-    public Object visitPointerVname(PointerVname pv, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public Object visitPointerLiteral(PointerLiteral pl, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public Object visitPointerExpression(PointerExpression pe, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public Object visitPointerTypeDenoter(PointerTypeDenoter ptd, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
 }

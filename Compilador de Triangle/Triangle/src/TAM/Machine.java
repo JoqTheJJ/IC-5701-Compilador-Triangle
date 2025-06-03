@@ -93,6 +93,7 @@ public final class Machine {
     booleanSize = 1,
     characterSize = 1,
     integerSize = 1,
+    pointerSize = 1,
     addressSize = 1,
     closureSize = 2 * addressSize,
 

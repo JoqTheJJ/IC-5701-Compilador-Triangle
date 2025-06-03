@@ -70,7 +70,7 @@ import Triangle.AbstractSyntaxTrees.Case;
 import Triangle.AbstractSyntaxTrees.MatchExpression;
 import Triangle.AbstractSyntaxTrees.CaseExpression;
 import Triangle.AbstractSyntaxTrees.DeleteCommand;
-import Triangle.AbstractSyntaxTrees.NewCommand;
+import Triangle.AbstractSyntaxTrees.NewExpression;
 import Triangle.AbstractSyntaxTrees.PointerExpression;
 import Triangle.AbstractSyntaxTrees.PointerLiteral;
 import Triangle.AbstractSyntaxTrees.PointerTypeDenoter;
@@ -238,9 +238,9 @@ public class TableVisitor implements Visitor {
         return null;
     }
     
-    //NewCommand
-    public Object visitNewCommand(NewCommand ast, Object obj){
-        ast.V.visit(this, null);
+    //NewExpression
+    public Object visitNewExpression(NewExpression ast, Object obj){
+        ast.type.visit(this, null);
         return null;
     }
     //
@@ -748,26 +748,5 @@ public class TableVisitor implements Visitor {
   // <editor-fold defaultstate="collapsed" desc=" Attributes ">
     private DefaultTableModel model;
     // </editor-fold>
-
-    @Override
-    public Object visitPointerVname(PointerVname pv, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public Object visitPointerLiteral(PointerLiteral pl, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public Object visitPointerExpression(PointerExpression pe, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public Object visitPointerTypeDenoter(PointerTypeDenoter ptd, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    
+  
 }

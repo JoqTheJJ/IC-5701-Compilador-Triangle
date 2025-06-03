@@ -1,0 +1,6 @@
+let
+  var p : Pointer
+in
+begin
+  p := new Integer
+end

@@ -175,6 +175,10 @@ public final class Scanner {
     case '}':
       takeIt();
       return Token.RCURLY;
+      
+    case '#':
+      takeIt();
+      return Token.HASH;
 
     case SourceFile.EOT:
       return Token.EOT;

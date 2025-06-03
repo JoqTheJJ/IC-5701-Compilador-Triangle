@@ -119,7 +119,7 @@ import Triangle.AbstractSyntaxTrees.Case;
 import Triangle.AbstractSyntaxTrees.MatchExpression;
 import Triangle.AbstractSyntaxTrees.CaseExpression;
 import Triangle.AbstractSyntaxTrees.DeleteCommand;
-import Triangle.AbstractSyntaxTrees.NewCommand;
+import Triangle.AbstractSyntaxTrees.NewExpression;
 import Triangle.AbstractSyntaxTrees.PointerExpression;
 import Triangle.AbstractSyntaxTrees.PointerLiteral;
 import Triangle.AbstractSyntaxTrees.PointerTypeDenoter;
@@ -361,9 +361,9 @@ public Object visitMatchExpression(MatchExpression ast, Object o) {
       return null;
     }
 
-    // NewCommand
-    public Object visitNewCommand(NewCommand ast, Object o){
-    //TODO
+    // NewExpression
+    public Object visitNewExpression(NewExpression ast, Object o){
+      // TODO
     return null;
     }
   
@@ -376,24 +376,30 @@ public Object visitMatchExpression(MatchExpression ast, Object o) {
   
   //Pointer 
   public Object visitPointerLiteral(PointerLiteral ast, Object o) {
-   return null;
-}
-
-public Object visitPointerVname(PointerVname ast, Object o) {
-   
-
     return null;
-}
+  }
 
-public Object visitPointerTypeDenoter(PointerTypeDenoter ast, Object o) {
-    // Suponiendo que un puntero ocupa una palabra
-    return 1;
-}
-
-public Object visitPointerExpression(PointerExpression ast, Object o) {
-    // Suponiendo que un puntero ocupa una palabra
+  public Object visitPointerVname(PointerVname ast, Object o) {
+    // ToDo
     return null;
-}
+  }
+
+  public Object visitPointerTypeDenoter(PointerTypeDenoter ast, Object o) {
+    // "Supone bien" (Chayanne, 2025)
+    if (ast.entity == null) {
+      ast.entity = new TypeRepresentation(Machine.pointerSize);
+      writeTableDetails(ast);
+    }
+    return new Integer(Machine.pointerSize);
+  }
+
+  public Object visitPointerExpression(PointerExpression ast, Object o) {
+    // Suponiendo que un puntero ocupa una palabra
+    Frame frame = (Frame) o;
+    Integer valSize = (Integer) ast.type.visit(this, null);
+    emit(Machine.LOADLop, 0, 0, Integer.parseInt(ast.PL.spelling));
+    return valSize;
+  }
 
   public Object visitBinaryExpression(BinaryExpression ast, Object o) {
     Frame frame = (Frame) o;
@@ -1230,24 +1236,4 @@ public Object visitPointerExpression(PointerExpression ast, Object o) {
       }
     }
   }
-
-    @Override
-    public Object visitPointerVname(PointerVname pv, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public Object visitPointerLiteral(PointerLiteral pl, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public Object visitPointerExpression(PointerExpression pe, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public Object visitPointerTypeDenoter(PointerTypeDenoter ptd, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
 }

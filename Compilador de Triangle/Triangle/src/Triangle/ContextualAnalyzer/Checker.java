@@ -175,14 +175,11 @@ public final class Checker implements Visitor {
   }
     
   //NewCommand
-    public Object visitNewCommand(NewCommand ast, Object o) {
-    TypeDenoter vType = (TypeDenoter) ast.V.visit(this, null);
+    public Object visitNewExpression(NewExpression ast, Object o) {
+    
+    ast.type = (TypeDenoter) ast.type.visit(this, null); /* Revisar que type sea un tipo */
 
-    if (!(vType instanceof PointerTypeDenoter)) {
-      reporter.reportError("\"new\" solo puede aplicarse a variables puntero", "", ast.position);
-    }
-
-    return null;
+    return StdEnvironment.pointerType;
   }
 
 
@@ -1014,7 +1011,7 @@ public Object visitPointerTypeDenoter(PointerTypeDenoter ast, Object o) {
     
     //Pointer ^
     StdEnvironment.pointerType = new PointerTypeDenoter(dummyPos);
-    StdEnvironment.pointerDecl = declareStdType("#", StdEnvironment.pointerType);
+    StdEnvironment.pointerDecl = declareStdType("Pointer", StdEnvironment.pointerType);
     StdEnvironment.nilDecl = declareStdConst("nil", StdEnvironment.pointerType);
 
     StdEnvironment.booleanDecl = declareStdType("Boolean", StdEnvironment.booleanType);
@@ -1057,19 +1054,4 @@ public Object visitPointerTypeDenoter(PointerTypeDenoter ast, Object o) {
     StdEnvironment.unequalDecl = declareStdBinaryOp("\\=", StdEnvironment.anyType, StdEnvironment.anyType, StdEnvironment.booleanType);
 
   }
-
-    @Override
-    public Object visitPointerVname(PointerVname pv, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public Object visitPointerLiteral(PointerLiteral pl, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public Object visitPointerTypeDenoter(PointerTypeDenoter ptd, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
 }
