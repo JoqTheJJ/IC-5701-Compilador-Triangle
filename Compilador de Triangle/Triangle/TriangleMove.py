@@ -15,7 +15,8 @@ def moveTriangle(origen_folder, destino_folder, nombre_archivo):
         print(f"Archivo existente {d} eliminado.")
 
     shutil.copy2(o, d)
-    print(f"Archivo {nombre_archivo} copiado de {origen_folder} a {destino_folder}")
+    print(f"Archivo: {nombre_archivo} \nOrigen: {origen_folder} \nDestino: {destino_folder}\n")
+    print("\n-------------------\n---< [ EXITO ] >---\n-------------------\n\n")
 
 
 directorio_origen     = "C:\\Users\\PC\\Documents\\GitHub\\IC-5701-Compilador-Triangle\\Compilador de Triangle\\Triangle\\dist"

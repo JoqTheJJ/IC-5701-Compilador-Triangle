@@ -376,24 +376,35 @@ public Object visitMatchExpression(MatchExpression ast, Object o) {
   
   //Pointer 
   public Object visitPointerLiteral(PointerLiteral ast, Object o) {
-   return null;
-}
-
-public Object visitPointerVname(PointerVname ast, Object o) {
-   
-
+    // TODO
     return null;
-}
+  }
 
-public Object visitPointerTypeDenoter(PointerTypeDenoter ast, Object o) {
+  public Object visitPointerVname(PointerVname ast, Object o) {
+    // TODO
+    return null;
+  }
+
+  public Object visitPointerTypeDenoter(PointerTypeDenoter ast, Object o) {
     // Suponiendo que un puntero ocupa una palabra
+    // "Supone bien" (Chayanne, 2025)
+    // TODO
+    
+    /*
+    if (ast.entity == null) {
+      ast.entity = new TypeRepresentation(Machine.integerSize);
+      writeTableDetails(ast);
+    }
+    return new Integer(Machine.integerSize);
+    */
     return 1;
-}
+  }
 
-public Object visitPointerExpression(PointerExpression ast, Object o) {
+  public Object visitPointerExpression(PointerExpression ast, Object o) {
     // Suponiendo que un puntero ocupa una palabra
+    // TODO
     return null;
-}
+  }
 
   public Object visitBinaryExpression(BinaryExpression ast, Object o) {
     Frame frame = (Frame) o;
