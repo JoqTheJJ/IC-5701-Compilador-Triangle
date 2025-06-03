@@ -1011,7 +1011,7 @@ public Object visitPointerTypeDenoter(PointerTypeDenoter ast, Object o) {
     
     //Pointer ^
     StdEnvironment.pointerType = new PointerTypeDenoter(dummyPos);
-    StdEnvironment.pointerDecl = declareStdType("#", StdEnvironment.pointerType);
+    StdEnvironment.pointerDecl = declareStdType("Pointer", StdEnvironment.pointerType);
     StdEnvironment.nilDecl = declareStdConst("nil", StdEnvironment.pointerType);
 
     StdEnvironment.booleanDecl = declareStdType("Boolean", StdEnvironment.booleanType);

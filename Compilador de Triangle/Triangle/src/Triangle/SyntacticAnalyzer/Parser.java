@@ -144,7 +144,6 @@ public class Parser {
 // represent it.
 
   Identifier parseIdentifier() throws SyntaxError {
-    System.out.println("holi, estoy en parseIdentifier() :O");
     Identifier I = null;
 
     if (currentToken.kind == Token.IDENTIFIER) {
@@ -753,7 +752,6 @@ public class Parser {
 
     case Token.VAR:
       {
-        System.out.println("holi, estoy en var de parseSingleDeclaration()");
         acceptIt();
         Identifier iAST = parseIdentifier();
         accept(Token.COLON);
@@ -1034,7 +1032,6 @@ public class Parser {
 
     case Token.IDENTIFIER:
       {
-        System.out.println("holi, estoy en identifier de parseTypeDenoter()");
         Identifier iAST = parseIdentifier();
         finish(typePos);
         typeAST = new SimpleTypeDenoter(iAST, typePos);

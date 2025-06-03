@@ -1,6 +1,6 @@
 let
-  var p : #
+  var p : Pointer
 in
 begin
-  
+  p := new Integer
 end
