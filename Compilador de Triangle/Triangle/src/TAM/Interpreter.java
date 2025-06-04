@@ -473,6 +473,12 @@ public class Interpreter {
           
           HP -= size; // Liberar memoria
           break;
+      case Machine.savePointerAddr:
+          pointers.add(CP);
+          System.out.print("Hemos guardado su puntero exitosamente en: ");
+          System.out.println(CP);
+          
+          break;
     }
   }
 

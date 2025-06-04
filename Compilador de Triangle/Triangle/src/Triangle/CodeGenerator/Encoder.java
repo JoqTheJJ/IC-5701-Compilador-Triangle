@@ -384,7 +384,7 @@ public Object visitMatchExpression(MatchExpression ast, Object o) {
     return null;
   }
 
-  public Object visitPointerTypeDenoter(PointerTypeDenoter ast, Object o) {
+      public Object visitPointerTypeDenoter(PointerTypeDenoter ast, Object o) {
     // "Supone bien" (Chayanne, 2025)
     if (ast.entity == null) {
       ast.entity = new TypeRepresentation(Machine.pointerSize);
@@ -586,6 +586,10 @@ public Object visitMatchExpression(MatchExpression ast, Object o) {
   public Object visitVarDeclaration(VarDeclaration ast, Object o) {
     Frame frame = (Frame) o;
     int extraSize;
+    
+    if (ast.T instanceof PointerTypeDenoter) {
+        emit(Machine.CALLop, 0, Machine.PBr, Machine.savePointerAddr);
+    }
 
     extraSize = ((Integer) ast.T.visit(this, null)).intValue();
     emit(Machine.PUSHop, 0, 0, extraSize);
