@@ -473,6 +473,9 @@ public class Interpreter {
           
           HP -= size; // Liberar memoria
           break;
+      case Machine.savePointerAddr:
+          pointers.add(ST);
+          break;
     }
   }
 

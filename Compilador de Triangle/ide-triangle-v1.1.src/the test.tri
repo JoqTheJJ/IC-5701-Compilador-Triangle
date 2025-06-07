@@ -1,0 +1,18 @@
+let
+  type fecha ~
+    record
+      dia : Integer,
+      mes : Integer
+    end;
+
+  var f: Pointer
+in
+begin
+  f := new fecha;
+  !#f.dia := 3;
+  !#f.mes := 5;
+
+  delete f;
+  f := new fecha;
+  f := nil
+end

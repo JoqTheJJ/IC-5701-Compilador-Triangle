@@ -219,14 +219,12 @@ public class TreeVisitor implements Visitor {
     }
     //DeleteCommand
     public Object visitDeleteCommand(DeleteCommand ast, Object obj){
-       ast.V.visit(this, null);
-       return null;
+       return (createUnary("Delete Command", ast.V));
     }
     
     //NewExpression
     public Object visitNewExpression(NewExpression ast, Object obj){
-       ast.type.visit(this, null);
-       return null;
+       return (createUnary("New Expression", ast.type));
     }
     
 

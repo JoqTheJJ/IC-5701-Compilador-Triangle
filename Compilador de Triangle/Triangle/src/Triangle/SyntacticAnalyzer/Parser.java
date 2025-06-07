@@ -139,6 +139,18 @@ public class Parser {
     }
     return CL;
   }
+  
+// parsePointerLiteral parses nil, and constructs a leaf
+// AST to represent it.
+
+  PointerLiteral parsePointerLiteral() throws SyntaxError {
+    PointerLiteral PL = null;
+    
+    previousTokenPosition = currentToken.position;    
+    PL = new PointerLiteral("99999", previousTokenPosition);
+    
+    return PL;
+  }
 
 // parseIdentifier parses an identifier, and constructs a leaf AST to
 // represent it.
@@ -565,6 +577,15 @@ public class Parser {
         expressionAST = new CharacterExpression(clAST, expressionPos);
       }
       break;
+      
+    case Token.NIL:
+      {
+        acceptIt();
+        PointerLiteral pAST = parsePointerLiteral();
+        finish(expressionPos);
+        expressionAST = new PointerExpression(pAST, expressionPos);
+      }
+      break;
 
     case Token.LBRACKET:
       {
@@ -620,6 +641,9 @@ public class Parser {
       break;
 
     default:
+      //Modificado error para que retorne el tipo de token (valor)
+      syntacticError("\"%\" cannot start an expression (token kind: " + currentToken.kind + ")", currentToken.spelling);
+        
       syntacticError("\"%\" cannot start an expression",
         currentToken.spelling);
       break;
@@ -1008,8 +1032,8 @@ public class Parser {
       break;
 
     default:
-      syntacticError("\"%\" cannot start an actual parameter",
-        currentToken.spelling);
+      //Modificado error para que retorne el tipo de token (valor)
+      syntacticError("\"%\" cannot start an actual parameter (token kind: " + currentToken.kind + ")", currentToken.spelling);
       break;
 
     }
