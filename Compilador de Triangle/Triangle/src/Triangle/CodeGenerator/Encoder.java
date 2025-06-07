@@ -172,7 +172,14 @@ public final class Encoder implements Visitor {
 
   public Object visitLetCommand(LetCommand ast, Object o) {
     Frame frame = (Frame) o;
+    //System.out.println("Holi, llegue al let");
+    //System.out.println("Holi, soy leti un let command: " + ast);
+    
     int extraSize = ((Integer) ast.D.visit(this, frame)).intValue();
+    //System.out.println("Holi, soy D de let command: " + ast.D);
+    //System.out.println("Holi, soy un #@$%_&$%@: " + ast.D.visit(this, frame));
+    //System.out.println("Holi, soy el size de un let command: " + extraSize);
+    
     ast.C.visit(this, new Frame(frame, extraSize));
     if (extraSize > 0)
       emit(Machine.POPop, 0, 0, extraSize);
@@ -363,8 +370,25 @@ public Object visitMatchExpression(MatchExpression ast, Object o) {
 
     // NewExpression
     public Object visitNewExpression(NewExpression ast, Object o){
-      // TODO
-    return null;
+      Frame frame = (Frame) o;
+      
+      int size = ((Integer) ast.type.visit(this, null)).intValue();
+        
+      System.out.println("[Holi, bienvenido a NEW :D]");
+      System.out.println("Holi, soy size de: " + ast);
+      System.out.println("Holi, mi tipo es: " + ast.type);
+      System.out.println("Holi, mi tamaño: " + size);
+      
+      //System.out.println("EMIT: op=" + op + ", r=" + r + ", n=" + n + ", d=" + d);
+      emit(Machine.PUSHop, 0, 0, size);
+      //System.out.println("EMIT: op=" + op + ", r=" + r + ", n=" + n + ", d=" + d);
+      emit(Machine.CALLop, 0, Machine.PBr, Machine.heapAllocAddr);
+      
+      System.out.println("Holi, popie a: " + " nada :P");
+      emit(Machine.POPop, 1, 0, Machine.pointerSize);
+      
+      System.out.println("[Holi, sobrevivi al NEW :'D]");
+    return Machine.pointerSize;
     }
   
    
@@ -1081,6 +1105,8 @@ public Object visitMatchExpression(MatchExpression ast, Object o) {
 
   // Appends an instruction, with the given fields, to the object code.
   private void emit (int op, int n, int r, int d) {
+    System.out.println("Holi soy EMIT y: op=" + op + ", r=" + r + ", n=" + n + ", d=" + d);
+    
     Instruction nextInstr = new Instruction();
     if (n > 255) {
         reporter.reportRestriction("length of operand can't exceed 255 words");
