@@ -449,7 +449,7 @@ public class Interpreter {
           addr = data[ST - 1]; // Ocupo la direccion que debo limpiar en el tope de la pila
           ST--; // Liberar memoria
           
-          if (HT <= addr || addr < HP) { // Validacion de si el objeto esta dentro del heap dinamico
+          if (HB > addr || addr >= HL) { // Validacion de si el objeto esta dentro del heap dinamico HB <= addr < HL
               status = failedInvalidInstruction;
               break;
           }
@@ -477,7 +477,26 @@ public class Interpreter {
           pointers.add(ST);
           break;
       case Machine.heapDeRefAddr:
-          //ToDo
+          addr = data[ST - 1]; // Ocupo la direccion que debo recuperar
+          ST--; // Liberar memoria
+          
+          if (HB > addr || addr >= HL) { // Validacion de si el objeto esta dentro del heap dinamico HB <= addr < HL
+              status = failedInvalidInstruction;
+              break;
+          }
+          
+          size = data[addr]; //Obtengo el espacio del objeto en memoria
+          
+          if (ST + size >= HB) { // Validacion de si hay espacio suficiente en la pila estatica
+              status = failedDataStoreFull;
+              break;
+          }
+          
+          for (int i = 0; i < size; i++) { //Copia el objeto de la memoria dinamica a la memoria estatica
+              data[ST + i] = data[addr + i + 1];
+          }
+          
+          ST = ST + size; // Aumentamos el puntero de la pila
           break;
       case Machine.heapStoreOp:
           //ToDo
