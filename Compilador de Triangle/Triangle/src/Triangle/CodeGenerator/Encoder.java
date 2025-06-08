@@ -365,7 +365,15 @@ public Object visitMatchExpression(MatchExpression ast, Object o) {
     // DeleteCommand
     public Object visitDeleteCommand(DeleteCommand ast, Object o) {
       // TODO: Generar código para liberar memoria del puntero (heap)
-      return null;
+        Frame frame = (Frame) o;
+        ast.V.visit(this, frame); // Evalúa el puntero a liberar
+        
+        emit(Machine.LOADop, 0, 0, 0);
+        
+        emit(Machine.CALLop, 0, Machine.PBr, Machine.heapFreeAddr); // Llama al sistema
+        
+        emit(Machine.POPop, 1, 0,0);
+        return null;
     }
 
     // NewExpression
@@ -385,7 +393,7 @@ public Object visitMatchExpression(MatchExpression ast, Object o) {
       emit(Machine.CALLop, 0, Machine.PBr, Machine.heapAllocAddr);
       
       System.out.println("Holi, popie a: " + " nada :P");
-      emit(Machine.POPop, 1, 0, Machine.pointerSize);
+      emit(Machine.POPop, 1, 0, 0);
       
       System.out.println("[Holi, sobrevivi al NEW :'D]");
     return Machine.pointerSize;

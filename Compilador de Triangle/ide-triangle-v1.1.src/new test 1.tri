@@ -11,5 +11,6 @@ let
 in
 begin
   p1 := new Gato;
-  p2 := p1;
+  p2 := new Gato
+
 end
