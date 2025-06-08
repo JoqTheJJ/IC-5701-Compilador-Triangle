@@ -371,6 +371,8 @@ public Object visitMatchExpression(MatchExpression ast, Object o) {
         emit(Machine.LOADop, 0, 0, 0);
         
         emit(Machine.CALLop, 0, Machine.PBr, Machine.heapFreeAddr); // Llama al sistema
+        
+        emit(Machine.CALLop, 0, Machine.PBr, Machine.heapPrint);
         return null;
     }
 
@@ -380,10 +382,10 @@ public Object visitMatchExpression(MatchExpression ast, Object o) {
       
       int size = ((Integer) ast.type.visit(this, null)).intValue();
         
-      //System.out.println("[Holi, bienvenido a NEW :D]");
-      //System.out.println("Holi, soy size de: " + ast);
-      //System.out.println("Holi, mi tipo es: " + ast.type);
-      //System.out.println("Holi, mi tamaño: " + size);
+      System.out.println("[Holi, bienvenido a NEW :D]");
+      System.out.println("Holi, soy size de: " + ast);
+      System.out.println("Holi, mi tipo es: " + ast.type);
+      System.out.println("Holi, mi tamaño: " + size);
       
       //System.out.println("EMIT: op=" + op + ", r=" + r + ", n=" + n + ", d=" + d);
       emit(Machine.PUSHop, 0, 0, size);
@@ -392,6 +394,8 @@ public Object visitMatchExpression(MatchExpression ast, Object o) {
       
       //System.out.println("Holi, popie a: " + " nada :P");
       emit(Machine.POPop, 1, 0, 0);
+      
+      emit(Machine.CALLop, 0, Machine.PBr, Machine.heapPrint);
       
       //System.out.println("[Holi, sobrevivi al NEW :'D]");
     return Machine.pointerSize;
@@ -1110,7 +1114,7 @@ public Object visitMatchExpression(MatchExpression ast, Object o) {
 
   // Appends an instruction, with the given fields, to the object code.
   private void emit (int op, int n, int r, int d) {
-    System.out.println("Holi soy EMIT y: op=" + op + ", r=" + r + ", n=" + n + ", d=" + d);
+    //System.out.println("Holi soy EMIT y: op=" + op + ", r=" + r + ", n=" + n + ", d=" + d);
     
     Instruction nextInstr = new Instruction();
     if (n > 255) {
