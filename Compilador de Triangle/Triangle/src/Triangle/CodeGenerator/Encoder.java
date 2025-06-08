@@ -371,8 +371,6 @@ public Object visitMatchExpression(MatchExpression ast, Object o) {
         emit(Machine.LOADop, 0, 0, 0);
         
         emit(Machine.CALLop, 0, Machine.PBr, Machine.heapFreeAddr); // Llama al sistema
-        
-        emit(Machine.POPop, 1, 0,0);
         return null;
     }
 
@@ -412,9 +410,8 @@ public Object visitMatchExpression(MatchExpression ast, Object o) {
   }
 
   public Object visitPointerVname(PointerVname ast, Object o) {
-    // ToDo
     return null;
-  }
+}
 
       public Object visitPointerTypeDenoter(PointerTypeDenoter ast, Object o) {
     // "Supone bien" (Chayanne, 2025)
