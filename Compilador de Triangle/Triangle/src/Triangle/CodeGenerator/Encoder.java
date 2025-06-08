@@ -385,7 +385,7 @@ public Object visitMatchExpression(MatchExpression ast, Object o) {
       emit(Machine.CALLop, 0, Machine.PBr, Machine.heapAllocAddr);
       
       //System.out.println("Holi, popie a: " + " nada :P");
-      emit(Machine.POPop, 1, 0, Machine.pointerSize);
+      emit(Machine.POPop, 1, 0, 0);
       
       //System.out.println("[Holi, sobrevivi al NEW :'D]");
     return Machine.pointerSize;
