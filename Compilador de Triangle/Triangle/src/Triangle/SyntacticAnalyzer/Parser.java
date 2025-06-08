@@ -780,6 +780,9 @@ public class Parser {
         Identifier iAST = parseIdentifier();
         accept(Token.COLON);
         TypeDenoter tAST = parseTypeDenoter();
+        if (currentToken.kind == Token.IDENTIFIER) {
+            TypeDenoter pointerAST = parseTypeDenoter();
+        }
         finish(declarationPos);
         declarationAST = new VarDeclaration(iAST, tAST, declarationPos);
       }
