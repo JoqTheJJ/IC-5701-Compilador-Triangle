@@ -79,6 +79,13 @@ public class Interpreter {
         return HT;
       case Machine.LBr:
         return LB;
+      
+      //Añadido registros memoria dinamico
+      case Machine.HLr:
+        return HL;
+      case Machine.HPr:
+        return HP;
+        
       case Machine.L1r:
         return data[LB];
       case Machine.L2r:
@@ -437,6 +444,8 @@ public class Interpreter {
         break;
       case Machine.heapAllocAddr:
           size = data[ST - 1]; // Ocupo el espacio del objeto al inicio de la pila estatica
+          System.out.println("Holi, el size en la pila es de: " + size);
+          
           if (HP + size + 1 >= HL) { // Validar que hay espacio
               status = failedDataStoreFull;
           } else {

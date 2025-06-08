@@ -388,7 +388,7 @@ public Object visitMatchExpression(MatchExpression ast, Object o) {
       System.out.println("Holi, mi tamaño: " + size);
       
       //System.out.println("EMIT: op=" + op + ", r=" + r + ", n=" + n + ", d=" + d);
-      emit(Machine.PUSHop, 0, 0, size);
+      emit(Machine.LOADLop, 0, 0, size); //size
       //System.out.println("EMIT: op=" + op + ", r=" + r + ", n=" + n + ", d=" + d);
       emit(Machine.CALLop, 0, Machine.PBr, Machine.heapAllocAddr);
       
