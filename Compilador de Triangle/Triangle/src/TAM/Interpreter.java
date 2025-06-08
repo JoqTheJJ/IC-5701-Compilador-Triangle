@@ -722,6 +722,8 @@ public class Interpreter {
 
   public static void main(String[] args) {
     System.out.println("********** TAM Interpreter (Java Version 2.1) HOLA MUNDO! **********");
+    
+    pointers.clear();
 
     if (args.length == 1)
       objectName = args[0];
