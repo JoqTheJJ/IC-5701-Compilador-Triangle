@@ -527,7 +527,8 @@ public class Interpreter {
           System.out.println("[HL] : " + HL);
           System.out.print("Punteros Activos: ");
           for (int i = 0; i < pointers.size(); i++) {
-              System.out.print(pointers.get(i) + "\t");
+              int x = pointers.get(i);
+              System.out.print("[" + x + " | " + data[x] + "]\t");
           }
           System.out.println("Adios :D\n");
           
