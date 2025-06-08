@@ -457,6 +457,7 @@ public class Interpreter {
       case Machine.heapFreeAddr:
           addr = data[ST - 1]; // Ocupo la direccion que debo limpiar en el tope de la pila
           ST--; // Liberar memoria
+          System.out.println("Holi, soy addr de delete y tengo: " + addr);
           
           if (HB > addr || addr >= HL) { // Validacion de si el objeto esta dentro del heap dinamico HB <= addr < HL
               status = failedInvalidInstruction;
@@ -557,6 +558,10 @@ public class Interpreter {
       r = currentInstr.r;
       n = currentInstr.n;
       d = currentInstr.d;
+      
+      System.out.println("Holi, mi status: " + status);
+      System.out.println("para mi proximo truco de magia: op=" + op + ", r=" + r + ", n=" + n + ", d=" + d);
+      
       // Execute instruction ...
       switch (op) {
         case Machine.LOADop:
@@ -606,6 +611,10 @@ public class Interpreter {
           break;
         case Machine.CALLop:
           addr = d + content(r);
+          
+          System.out.println("Holi, soy PB y contengo: " + content(r));
+          System.out.println("Holi, soy addr: " + addr);
+          
           if (addr >= Machine.PB) {
             callPrimitive(addr - Machine.PB);
             CP = CP + 1;

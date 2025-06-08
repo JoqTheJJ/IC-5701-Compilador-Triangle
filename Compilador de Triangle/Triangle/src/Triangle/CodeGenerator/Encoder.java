@@ -368,7 +368,9 @@ public Object visitMatchExpression(MatchExpression ast, Object o) {
         Frame frame = (Frame) o;
         ast.V.visit(this, frame); // Evalúa el puntero a liberar
         
-        emit(Machine.LOADop, 0, 0, 0);
+        //System.out.println("EMIT: op=" + op + ", r=" + r + ", n=" + n + ", d=" + d);
+        //emit(Machine.LOADop, 0, Machine.STr, 0);
+        encodeFetch(ast.V, frame, Machine.pointerSize);
         
         emit(Machine.CALLop, 0, Machine.PBr, Machine.heapFreeAddr); // Llama al sistema
         
