@@ -525,7 +525,12 @@ public class Interpreter {
           System.out.println("[HP] : " + HP + "/2048");
           System.out.println("----------------------------------------");
           System.out.println("[HL] : " + HL);
-          System.out.println("");
+          System.out.print("Punteros Activos: ");
+          for (int i = 0; i < pointers.size(); i++) {
+              System.out.print(pointers.get(i) + "\t");
+          }
+          System.out.println("Adios :D\n");
+          
           break;
     }
   }
