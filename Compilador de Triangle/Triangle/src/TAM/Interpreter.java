@@ -476,6 +476,12 @@ public class Interpreter {
       case Machine.savePointerAddr:
           pointers.add(ST);
           break;
+      case Machine.heapDeRefAddr:
+          //ToDo
+          break;
+      case Machine.heapStoreOp:
+          //ToDo
+          break;
     }
   }
 

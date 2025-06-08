@@ -374,20 +374,20 @@ public Object visitMatchExpression(MatchExpression ast, Object o) {
       
       int size = ((Integer) ast.type.visit(this, null)).intValue();
         
-      System.out.println("[Holi, bienvenido a NEW :D]");
-      System.out.println("Holi, soy size de: " + ast);
-      System.out.println("Holi, mi tipo es: " + ast.type);
-      System.out.println("Holi, mi tamaño: " + size);
+      //System.out.println("[Holi, bienvenido a NEW :D]");
+      //System.out.println("Holi, soy size de: " + ast);
+      //System.out.println("Holi, mi tipo es: " + ast.type);
+      //System.out.println("Holi, mi tamaño: " + size);
       
       //System.out.println("EMIT: op=" + op + ", r=" + r + ", n=" + n + ", d=" + d);
       emit(Machine.PUSHop, 0, 0, size);
       //System.out.println("EMIT: op=" + op + ", r=" + r + ", n=" + n + ", d=" + d);
       emit(Machine.CALLop, 0, Machine.PBr, Machine.heapAllocAddr);
       
-      System.out.println("Holi, popie a: " + " nada :P");
+      //System.out.println("Holi, popie a: " + " nada :P");
       emit(Machine.POPop, 1, 0, Machine.pointerSize);
       
-      System.out.println("[Holi, sobrevivi al NEW :'D]");
+      //System.out.println("[Holi, sobrevivi al NEW :'D]");
     return Machine.pointerSize;
     }
   
