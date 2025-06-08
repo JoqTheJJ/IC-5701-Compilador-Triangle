@@ -501,6 +501,23 @@ public class Interpreter {
       case Machine.heapStoreOp:
           //ToDo
           break;
+      case Machine.heapPrint:
+          System.out.println("Memoria Dinamica");
+          System.out.println("----------------------------------------");
+          for (int i = HB; i < HP; i++) {
+              System.out.print("| [" + i + "] = " + data[i]);
+              if (i == HB) {
+                  System.out.println("   <-  [HB]");
+              } else {
+                  System.out.println("");
+              }
+          }
+          System.out.println("----------------------------------------");
+          System.out.println("[HP] : " + HP + "/2048");
+          System.out.println("----------------------------------------");
+          System.out.println("[HL] : " + HL);
+          System.out.println("");
+          break;
     }
   }
 

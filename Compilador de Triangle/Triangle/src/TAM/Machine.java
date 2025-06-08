@@ -64,7 +64,7 @@ public final class Machine {
   public final static int
     CB = 0,
     PB = 1024,  // = upper bound of code array + 1
-    PT = 1057;  // = PB + 28 + 3 + 2 // MOD
+    PT = 1058;  // = PB + 28 + 3 + 3 // MOD
   
 // REGISTER NUMBERS
 
@@ -140,6 +140,7 @@ public final class Machine {
     heapFreeAddr = 30,          // AGREGADO
     savePointerAddr = 31,       // AGREGADO
     heapDeRefAddr = 32,         // AGREGADO
-    heapStoreOp = 33;           // AGREGADO
+    heapStoreOp = 33,           // AGREGADO
+    heapPrint = 34;             // AGREGADO
     
 }
