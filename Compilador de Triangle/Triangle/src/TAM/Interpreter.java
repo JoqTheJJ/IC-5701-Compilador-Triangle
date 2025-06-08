@@ -79,6 +79,13 @@ public class Interpreter {
         return HT;
       case Machine.LBr:
         return LB;
+      
+      //Añadido registros memoria dinamico
+      case Machine.HLr:
+        return HL;
+      case Machine.HPr:
+        return HP;
+        
       case Machine.L1r:
         return data[LB];
       case Machine.L2r:
@@ -437,6 +444,8 @@ public class Interpreter {
         break;
       case Machine.heapAllocAddr:
           size = data[ST - 1]; // Ocupo el espacio del objeto al inicio de la pila estatica
+          System.out.println("Holi, el size en la pila es de: " + size);
+          
           if (HP + size + 1 >= HL) { // Validar que hay espacio
               status = failedDataStoreFull;
           } else {
@@ -448,6 +457,7 @@ public class Interpreter {
       case Machine.heapFreeAddr:
           addr = data[ST - 1]; // Ocupo la direccion que debo limpiar en el tope de la pila
           ST--; // Liberar memoria
+          System.out.println("Holi, soy addr de delete y tengo: " + addr);
           
           if (HB > addr || addr >= HL) { // Validacion de si el objeto esta dentro del heap dinamico HB <= addr < HL
               status = failedInvalidInstruction;
@@ -518,7 +528,8 @@ public class Interpreter {
           System.out.println("[HL] : " + HL);
           System.out.print("Punteros Activos: ");
           for (int i = 0; i < pointers.size(); i++) {
-              System.out.print(pointers.get(i) + "\t");
+              int x = pointers.get(i);
+              System.out.print("[" + x + " | " + data[x] + "]\t");
           }
           System.out.println("Adios :D\n");
           
@@ -547,6 +558,10 @@ public class Interpreter {
       r = currentInstr.r;
       n = currentInstr.n;
       d = currentInstr.d;
+      
+      System.out.println("Holi, mi status: " + status);
+      System.out.println("para mi proximo truco de magia: op=" + op + ", r=" + r + ", n=" + n + ", d=" + d);
+      
       // Execute instruction ...
       switch (op) {
         case Machine.LOADop:
@@ -596,6 +611,10 @@ public class Interpreter {
           break;
         case Machine.CALLop:
           addr = d + content(r);
+          
+          System.out.println("Holi, soy PB y contengo: " + content(r));
+          System.out.println("Holi, soy addr: " + addr);
+          
           if (addr >= Machine.PB) {
             callPrimitive(addr - Machine.PB);
             CP = CP + 1;
@@ -712,6 +731,8 @@ public class Interpreter {
 
   public static void main(String[] args) {
     System.out.println("********** TAM Interpreter (Java Version 2.1) HOLA MUNDO! **********");
+    
+    pointers.clear();
 
     if (args.length == 1)
       objectName = args[0];

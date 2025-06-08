@@ -1,43 +1,16 @@
 let
-
-
   var p1 : Pointer;
-
-
-  var p2 : Pointer;
-
-
+  var p2 : Pointer Gato;
   
-
-
   type Gato ~
-
-
     record
-
-
       inicial : Char,
-
-
-      edad : Integer
-
-
+      edad : Integer,
+      numeroFavorito : Integer
     end
-
-
 in
-
-
 begin
-
-
   p1 := new Gato;
-
-
-  p2 := new Gato
-
-
-
-
-
+  p2 := new Gato;
+  delete p1;
 end

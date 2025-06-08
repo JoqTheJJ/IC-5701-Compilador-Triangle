@@ -84,7 +84,11 @@ public final class Machine {
     L4r = LBr + 4,
     L5r = LBr + 5,
     L6r = LBr + 6,
-    CPr = 15;
+    CPr = 15,
+          
+    //Añadido
+    HLr = 16,
+    HPr = 17;
 
 
 // DATA REPRESENTATION
