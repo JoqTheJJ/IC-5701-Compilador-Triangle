@@ -365,7 +365,13 @@ public Object visitMatchExpression(MatchExpression ast, Object o) {
     // DeleteCommand
     public Object visitDeleteCommand(DeleteCommand ast, Object o) {
       // TODO: Generar código para liberar memoria del puntero (heap)
-      return null;
+        Frame frame = (Frame) o;
+        ast.V.visit(this, frame); // Evalúa el puntero a liberar
+        
+        emit(Machine.LOADop, 0, 0, 0);
+        
+        emit(Machine.CALLop, 0, Machine.PBr, Machine.heapFreeAddr); // Llama al sistema
+        return null;
     }
 
     // NewExpression
@@ -374,20 +380,20 @@ public Object visitMatchExpression(MatchExpression ast, Object o) {
       
       int size = ((Integer) ast.type.visit(this, null)).intValue();
         
-      System.out.println("[Holi, bienvenido a NEW :D]");
-      System.out.println("Holi, soy size de: " + ast);
-      System.out.println("Holi, mi tipo es: " + ast.type);
-      System.out.println("Holi, mi tamaño: " + size);
+      //System.out.println("[Holi, bienvenido a NEW :D]");
+      //System.out.println("Holi, soy size de: " + ast);
+      //System.out.println("Holi, mi tipo es: " + ast.type);
+      //System.out.println("Holi, mi tamaño: " + size);
       
       //System.out.println("EMIT: op=" + op + ", r=" + r + ", n=" + n + ", d=" + d);
       emit(Machine.PUSHop, 0, 0, size);
       //System.out.println("EMIT: op=" + op + ", r=" + r + ", n=" + n + ", d=" + d);
       emit(Machine.CALLop, 0, Machine.PBr, Machine.heapAllocAddr);
       
-      System.out.println("Holi, popie a: " + " nada :P");
-      emit(Machine.POPop, 1, 0, Machine.pointerSize);
+      //System.out.println("Holi, popie a: " + " nada :P");
+      emit(Machine.POPop, 1, 0, 0);
       
-      System.out.println("[Holi, sobrevivi al NEW :'D]");
+      //System.out.println("[Holi, sobrevivi al NEW :'D]");
     return Machine.pointerSize;
     }
   
@@ -404,9 +410,8 @@ public Object visitMatchExpression(MatchExpression ast, Object o) {
   }
 
   public Object visitPointerVname(PointerVname ast, Object o) {
-    // ToDo
     return null;
-  }
+}
 
       public Object visitPointerTypeDenoter(PointerTypeDenoter ast, Object o) {
     // "Supone bien" (Chayanne, 2025)
