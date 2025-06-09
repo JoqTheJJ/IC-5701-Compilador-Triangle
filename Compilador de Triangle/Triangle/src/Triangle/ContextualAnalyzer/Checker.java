@@ -365,6 +365,18 @@ public Object visitPointerTypeDenoter(PointerTypeDenoter ast, Object o) {
     ast.type = new RecordTypeDenoter(rType, ast.position);
     return ast.type;
   }
+  
+  public Object visitReturnCommand(ReturnCommand ast, Object o) {
+    // Verifica que la variable exista y obtén su tipo
+    TypeDenoter vType = (TypeDenoter) ast.V.visit(this, null);
+
+    // Verifica que sea un puntero
+    if (!(vType instanceof PointerTypeDenoter)) {
+      reporter.reportError("\"return\" solo puede aplicarse a variables puntero", "", ast.position);
+    }
+
+    return null;
+  }
 
   public Object visitUnaryExpression(UnaryExpression ast, Object o) {
 

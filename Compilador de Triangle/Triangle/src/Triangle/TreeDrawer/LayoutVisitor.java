@@ -64,6 +64,7 @@ import Triangle.AbstractSyntaxTrees.ProcFormalParameter;
 import Triangle.AbstractSyntaxTrees.Program;
 import Triangle.AbstractSyntaxTrees.RecordExpression;
 import Triangle.AbstractSyntaxTrees.RecordTypeDenoter;
+import Triangle.AbstractSyntaxTrees.ReturnCommand;
 
 //RepeatCommand
 import Triangle.AbstractSyntaxTrees.RepeatCommand;
@@ -217,6 +218,11 @@ public class LayoutVisitor implements Visitor {
 // DeleteCommand
     public Object visitDeleteCommand(DeleteCommand ast, Object obj) {
       return layoutUnary("DeleteCom.", ast.V);
+    }
+    
+// ReturnCommand
+    public Object visitReturnCommand(ReturnCommand ast, Object obj) {
+      return layoutUnary("ReturnCom.", ast.V);
     }
 
 // NewExpression

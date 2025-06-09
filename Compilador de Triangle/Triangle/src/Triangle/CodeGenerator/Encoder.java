@@ -130,6 +130,7 @@ import Triangle.AbstractSyntaxTrees.PointerExpression;
 import Triangle.AbstractSyntaxTrees.PointerLiteral;
 import Triangle.AbstractSyntaxTrees.PointerTypeDenoter;
 import Triangle.AbstractSyntaxTrees.PointerVname;
+import Triangle.AbstractSyntaxTrees.ReturnCommand;
 
 public final class Encoder implements Visitor {
 
@@ -364,7 +365,6 @@ public Object visitMatchExpression(MatchExpression ast, Object o) {
 
     // DeleteCommand
     public Object visitDeleteCommand(DeleteCommand ast, Object o) {
-      // TODO: Generar código para liberar memoria del puntero (heap)
         Frame frame = (Frame) o;
         ast.V.visit(this, frame); // Evalúa el puntero a liberar
         
@@ -401,6 +401,18 @@ public Object visitMatchExpression(MatchExpression ast, Object o) {
       
       //System.out.println("[Holi, sobrevivi al NEW :'D]");
     return Machine.pointerSize;
+    }
+    
+    public Object visitReturnCommand(ReturnCommand ast, Object o) {
+        Frame frame = (Frame) o;
+        ast.V.visit(this, frame); // Evalúa el puntero a liberar
+        
+        encodeFetch(ast.V, frame, Machine.pointerSize);
+        
+        emit(Machine.CALLop, 0, Machine.PBr, Machine.heapStoreOp); // Llama al sistema
+        
+        emit(Machine.CALLop, 0, Machine.PBr, Machine.heapPrint);
+        return null;
     }
   
    

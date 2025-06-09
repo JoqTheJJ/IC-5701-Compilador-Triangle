@@ -509,7 +509,22 @@ public class Interpreter {
           ST = ST + size; // Aumentamos el puntero de la pila
           break;
       case Machine.heapStoreOp:
-          //ToDo
+          addr = data[ST - 1]; // Ocupo la direccion que debo recuperar
+          ST--;
+          
+          if (HB > addr || addr >= HL) { // Validacion de si el objeto esta dentro del heap dinamico HB <= addr < HL
+              status = failedInvalidInstruction;
+              break;
+          }
+          
+          size = data[addr]; // Obtengo el espacio del objeto en memoria
+          
+          for (int i = 0; i < size; i++) { // Movemos el objeto a la memoria dinamica
+              data[addr + i] = data[ST - size + i];
+          }
+          
+          ST = ST - size; // Eliminamos el objeto de la memoria estatica
+          
           break;
       case Machine.heapPrint:
           System.out.println("Memoria Dinamica");
