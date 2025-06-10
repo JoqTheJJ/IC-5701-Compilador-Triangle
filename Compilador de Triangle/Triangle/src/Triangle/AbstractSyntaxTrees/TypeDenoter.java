@@ -23,5 +23,7 @@ public abstract class TypeDenoter extends AST {
   }
 
   public abstract boolean equals(Object obj);
+  
+  public abstract String toString();
 
 }

@@ -32,4 +32,9 @@ public class BoolTypeDenoter extends TypeDenoter {
     else
       return ((obj != null) && (obj instanceof BoolTypeDenoter));
   }
+  
+    @Override
+    public String toString() {
+        return "BoolTypeDenoter";
+    }
 }

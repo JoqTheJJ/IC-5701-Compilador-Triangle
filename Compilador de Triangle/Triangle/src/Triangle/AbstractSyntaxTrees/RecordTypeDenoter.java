@@ -35,6 +35,11 @@ public class RecordTypeDenoter extends TypeDenoter {
     else
       return false;
   }
+  
+    @Override
+    public String toString() {
+        return "RecordTypeDenoter";
+    }
 
   public FieldTypeDenoter FT;
 }

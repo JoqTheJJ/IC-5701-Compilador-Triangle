@@ -37,6 +37,11 @@ public class SingleFieldTypeDenoter extends FieldTypeDenoter {
     } else
       return false;
   }
+    
+    @Override
+    public String toString() {
+        return "SingleFieldTypeDenoter<" + this.I.spelling.toString() + ">";
+    }
 
   public Identifier I;
   public TypeDenoter T;

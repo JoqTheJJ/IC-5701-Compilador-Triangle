@@ -5,8 +5,9 @@ import Triangle.SyntacticAnalyzer.SourcePosition;
 
 public class PointerTypeDenoter extends TypeDenoter {
 
-  public PointerTypeDenoter (SourcePosition thePosition) {
+  public PointerTypeDenoter (TypeDenoter tAST, SourcePosition thePosition) {
     super (thePosition);
+    this.T = tAST;
   }
 
   public Object visit (Visitor v, Object o) {
@@ -19,4 +20,11 @@ public class PointerTypeDenoter extends TypeDenoter {
     else
       return (obj != null && obj instanceof PointerTypeDenoter);
   }
+  
+    @Override
+    public String toString() {
+        return "PointerTypeDenoter<" + this.T.toString() + ">";
+    }
+  
+  public TypeDenoter T;
 }

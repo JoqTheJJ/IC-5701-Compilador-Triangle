@@ -29,4 +29,9 @@ public class ErrorTypeDenoter extends TypeDenoter {
   public boolean equals (Object obj) {
     return true;
   }
+  
+    @Override
+    public String toString() {
+        return "ErrorTypeDenoter";
+    }
 }

@@ -32,4 +32,9 @@ public class IntTypeDenoter extends TypeDenoter {
     else
       return (obj != null && obj instanceof IntTypeDenoter);
   }
+  
+    @Override
+    public String toString() {
+        return "IntTypeDenoter";
+    }
 }
