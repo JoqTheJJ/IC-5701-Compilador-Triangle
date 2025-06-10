@@ -228,7 +228,10 @@ public class Parser {
         acceptIt();
         
         System.out.println("Holi, llegue a HASH");
-        Vname vAST = parsePointerVname();
+        Expression e = parseDerefExpression();
+        Vname vAST = parseIndividualPointerVname();
+        
+        
         System.out.println("Holi, parsie el puntero :D");
         accept(Token.BECOMES);
         Expression eAST = parseExpression();
@@ -460,6 +463,18 @@ public class Parser {
 //
 ///////////////////////////////////////////////////////////////////////////////
 
+  Expression parseDerefExpression() throws SyntaxError {
+    Expression e = null;
+      
+    SourcePosition expressionPos = new SourcePosition();
+    start (expressionPos);
+    
+    Vname iivAST = parseIndividualPointerVname();
+    
+    e = new VnameExpression(iivAST, expressionPos);
+    return e;
+  }
+  
   Expression parseExpression() throws SyntaxError {
     Expression expressionAST = null; // in case there's a syntactic error
 
@@ -732,6 +747,16 @@ public class Parser {
 //
 ///////////////////////////////////////////////////////////////////////////////
 
+  Vname parseIndividualPointerVname () throws SyntaxError {
+    Vname vnameAST = null; // in case there's a syntactic error
+    Identifier iAST = parseIdentifier();
+    
+    SourcePosition vnamePos = new SourcePosition();
+    vnamePos = iAST.position;
+    vnameAST = new SimpleVname(iAST, vnamePos); //Pointer/Simple
+    return vnameAST;
+  }
+  
   Vname parsePointerVname () throws SyntaxError {
     Vname vnameAST = null; // in case there's a syntactic error
     Identifier iAST = parseIdentifier();
