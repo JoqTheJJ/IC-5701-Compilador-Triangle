@@ -5,10 +5,10 @@ import Triangle.SyntacticAnalyzer.SourcePosition;
 
 public class PointerTypeDenoter extends TypeDenoter {
 
-  public PointerTypeDenoter (Identifier iAST, SourcePosition thePosition) {
+  public PointerTypeDenoter (Identifier iAST, TypeDenoter tAST, SourcePosition thePosition) {
     super (thePosition);
     I = iAST;
-    T = null;
+    T = tAST;
   }
   
   public void setPointerType(TypeDenoter pointerType){

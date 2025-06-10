@@ -31,10 +31,20 @@ public final class Checker implements Visitor {
   public Object visitAssignCommand(AssignCommand ast, Object o) {
     TypeDenoter vType = (TypeDenoter) ast.V.visit(this, null);
     TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
+    
+    //if (vType)
+    
     if (!ast.V.variable)
       reporter.reportError ("LHS of assignment is not a variable", "", ast.V.position);
-    if (! eType.equals(vType))
-      reporter.reportError ("assignment incompatibilty", "", ast.position);
+    if (! eType.equals(vType)){
+        
+      if (vType != null && !(vType instanceof AnyTypeDenoter)) {
+        System.out.println("AAAAAAAAAAAAAAA " + (vType instanceof AnyTypeDenoter));
+        String error = "assignment incompatibilty from \""+String.valueOf(vType)+"\" & \""+String.valueOf(eType)+"\" ";
+        reporter.reportError (error, "", ast.position);
+      } 
+    }
+      
     return null;
   }
 
@@ -790,9 +800,11 @@ public Object visitPointerTypeDenoter(PointerTypeDenoter ast, Object o) {
     ast.type = null;
     TypeDenoter vType = (TypeDenoter) ast.V.visit(this, null);
     ast.variable = ast.V.variable;
-    if (! (vType instanceof RecordTypeDenoter))
-      reporter.reportError ("record expected here", "", ast.V.position);
-    else {
+    if (! (vType instanceof RecordTypeDenoter)){
+      if (! (vType instanceof AnyTypeDenoter))
+        reporter.reportError ("record expected here, not" + vType.toString(), "", ast.V.position);
+    
+    } else {
       ast.type = checkFieldIdentifier(((RecordTypeDenoter) vType).FT, ast.I);
       if (ast.type == StdEnvironment.errorType)
         reporter.reportError ("no field \"%\" in this record type",
@@ -1005,7 +1017,7 @@ public Object visitPointerTypeDenoter(PointerTypeDenoter ast, Object o) {
     StdEnvironment.errorType = new ErrorTypeDenoter(dummyPos);
     
     //Pointer ^
-    StdEnvironment.pointerType = new PointerTypeDenoter(dummyI, dummyPos);
+    StdEnvironment.pointerType = new PointerTypeDenoter(dummyI, StdEnvironment.anyType, dummyPos);
     StdEnvironment.pointerDecl = declareStdType("Pointer", StdEnvironment.pointerType);
     StdEnvironment.nilDecl = declareStdConst("nil", StdEnvironment.pointerType);
 

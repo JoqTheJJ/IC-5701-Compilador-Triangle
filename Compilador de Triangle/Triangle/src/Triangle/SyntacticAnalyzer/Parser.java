@@ -158,6 +158,7 @@ public class Parser {
   Identifier parseIdentifier() throws SyntaxError {
     Identifier I = null;
 
+    System.out.println("HOLI, estoy en parseIdentifier");
     if (currentToken.kind == Token.IDENTIFIER) {
       previousTokenPosition = currentToken.position;
       String spelling = currentToken.spelling;
@@ -221,6 +222,21 @@ public class Parser {
     System.out.println("Token recibido: " + currentToken.spelling + " (kind: " + currentToken.kind + ")");
 
     switch (currentToken.kind) {
+        
+    case Token.HASH:
+      {
+        acceptIt();
+        
+        System.out.println("Holi, llegue a HASH");
+        Vname vAST = parsePointerVname();
+        System.out.println("Holi, parsie el puntero :D");
+        accept(Token.BECOMES);
+        Expression eAST = parseExpression();
+        System.out.println("Holi, parsie la expresion :D");
+        finish(commandPos);
+        commandAST = new AssignCommand(vAST, eAST, commandPos);
+      }
+      break;
 
     case Token.IDENTIFIER:
       {
@@ -409,6 +425,7 @@ public class Parser {
       finish(commandPos);
       commandAST = new DeleteCommand(vAST, commandPos);
     }
+
     break;
 
     
@@ -530,30 +547,6 @@ public class Parser {
     }
     break;
     
-    case Token.HASH:
-    {
-      acceptIt();
-      
-      /*Option 1
-      Only parse as normal
-      */
-      Vname vAST = parsePointerVname();
-      
-      /*Option 2
-      //Manually parse a simple vname
-      Identifier iAST = parseIdentifier();
-      
-      SourcePosition vnamePos = new SourcePosition();
-      vnamePos = iAST.position;
-      Vname vAST = new PointerVname(iAST, vnamePos); //Simple -> Pointer
-      */
-      
-      finish(expressionPos);
-      expressionAST = new VnameExpression(vAST, expressionPos); //Vname o deref (???)
-    }
-    break;
-      
-
     default:
       expressionAST = parseSecondaryExpression();
       break;
@@ -662,6 +655,19 @@ public class Parser {
       expressionAST = parseExpression();
       accept(Token.RPAREN);
       break;
+      
+      
+    case Token.HASH:
+    {
+      acceptIt();
+      
+      Vname vAST = parsePointerVname();
+      
+      finish(expressionPos);
+      expressionAST = new VnameExpression(vAST, expressionPos);
+    }
+    break;
+    
 
     default:
       //Modificado error para que retorne el tipo de token (valor)
@@ -841,8 +847,7 @@ public class Parser {
             
             TypeDenoter type = parseTypeDenoter();
             
-            PointerTypeDenoter ptAST = new PointerTypeDenoter(stAST.I, stAST.position);
-            ptAST.setPointerType(type);
+            PointerTypeDenoter ptAST = new PointerTypeDenoter(stAST.I, type, stAST.position);
             
             finish(declarationPos);
             declarationAST = new VarDeclaration(iAST, ptAST, declarationPos);
@@ -1128,7 +1133,7 @@ public class Parser {
       {
         Identifier iAST = parseIdentifier();
         finish(typePos);
-        typeAST = new PointerTypeDenoter(iAST, typePos);
+        typeAST = new PointerTypeDenoter(iAST, null, typePos);
         
         ptAST.setPointerType(typeAST);
       }

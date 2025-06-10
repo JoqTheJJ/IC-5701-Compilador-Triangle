@@ -120,10 +120,6 @@ import Triangle.AbstractSyntaxTrees.MatchExpression;
 import Triangle.AbstractSyntaxTrees.CaseExpression;
 import Triangle.AbstractSyntaxTrees.DeleteCommand;
 import Triangle.AbstractSyntaxTrees.NewExpression;
-import Triangle.AbstractSyntaxTrees.PointerExpression;
-import Triangle.AbstractSyntaxTrees.PointerLiteral;
-import Triangle.AbstractSyntaxTrees.PointerTypeDenoter;
-import Triangle.AbstractSyntaxTrees.PointerVname;
 
 //Pointer 
 import Triangle.AbstractSyntaxTrees.PointerExpression;
@@ -415,13 +411,14 @@ public Object visitMatchExpression(MatchExpression ast, Object o) {
 
   public Object visitPointerVname(PointerVname ast, Object o) {
     Frame frame = (Frame) o;
+    ast.offset = 0;
+    ast.indexed = false;
     
-    /* Normal Vname
-    Integer valSize = (Integer) ast.type.visit(this, null);
-    encodeFetch(ast.V, frame, valSize.intValue());
-    */
+    Object simpleVname = ast.I.decl.entity;
     
-    ast.visit(this, null);
+    //int size = ((Integer) ast.type.visit(this, null)).intValue();
+    
+    //ast.visit(this, null);
     
     encodeFetch(ast, frame, Machine.pointerSize);
     

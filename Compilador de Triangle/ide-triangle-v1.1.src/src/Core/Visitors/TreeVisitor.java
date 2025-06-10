@@ -438,7 +438,7 @@ public class TreeVisitor implements Visitor {
         String type;
         
         if (ast.T == null){
-            type = "null";
+            type = "Holi";
         } else {
             type = ast.T.toString();
         }
