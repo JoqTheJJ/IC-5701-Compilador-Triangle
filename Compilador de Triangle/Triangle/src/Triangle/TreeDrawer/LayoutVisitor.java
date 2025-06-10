@@ -278,7 +278,7 @@ public class LayoutVisitor implements Visitor {
   
 public Object visitPointerTypeDenoter(PointerTypeDenoter ast, Object obj) {
     // Suponiendo que un puntero ocupa una palabra
-    return layoutNullary("pointer");
+    return layoutNullary("Pointer " + ast.T);
 }
 
  public Object visitPointerExpression(PointerExpression ast, Object obj) {
@@ -288,7 +288,7 @@ public Object visitPointerTypeDenoter(PointerTypeDenoter ast, Object obj) {
    
  public Object visitPointerLiteral(PointerLiteral ast, Object obj) {
     // Suponiendo que un puntero ocupa una palabra
-    return layoutNullary(ast.spelling);
+    return layoutNullary(ast.name);
 }
  
   public Object visitPointerVname(PointerVname ast, Object obj) {

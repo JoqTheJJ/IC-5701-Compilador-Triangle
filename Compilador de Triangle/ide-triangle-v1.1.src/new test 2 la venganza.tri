@@ -1,7 +1,7 @@
 let
-  var p1 : Pointer;
-  var p2 : Pointer;
-  var p3 : Pointer;
+  var p1 : Pointer a;
+  var p2 : Pointer b;
+  var p3 : Pointer c;  
 
   var s : Char;
   
@@ -29,8 +29,9 @@ begin
   p2 := new b;
   p3 := new c;
   delete p1;
-  !p1 := nil;
+  p1 := nil;
   delete p2;
-  !p2 := nil;
-  p1 := new c
+  p2 := nil;
+  !delete p2;
+  p1 := new a
 end

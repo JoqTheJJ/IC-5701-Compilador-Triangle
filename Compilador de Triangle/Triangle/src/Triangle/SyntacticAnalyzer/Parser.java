@@ -147,7 +147,7 @@ public class Parser {
     PointerLiteral PL = null;
     
     previousTokenPosition = currentToken.position;    
-    PL = new PointerLiteral("99999", previousTokenPosition);
+    PL = new PointerLiteral("99999", "nil", previousTokenPosition);
     
     return PL;
   }
@@ -529,6 +529,29 @@ public class Parser {
       expressionAST = new NewExpression(tAST, expressionPos);
     }
     break;
+    
+    case Token.HASH:
+    {
+      acceptIt();
+      
+      /*Option 1
+      Only parse as normal
+      */
+      Vname vAST = parsePointerVname();
+      
+      /*Option 2
+      //Manually parse a simple vname
+      Identifier iAST = parseIdentifier();
+      
+      SourcePosition vnamePos = new SourcePosition();
+      vnamePos = iAST.position;
+      Vname vAST = new PointerVname(iAST, vnamePos); //Simple -> Pointer
+      */
+      
+      finish(expressionPos);
+      expressionAST = new VnameExpression(vAST, expressionPos); //Vname o deref (???)
+    }
+    break;
       
 
     default:
@@ -703,6 +726,36 @@ public class Parser {
 //
 ///////////////////////////////////////////////////////////////////////////////
 
+  Vname parsePointerVname () throws SyntaxError {
+    Vname vnameAST = null; // in case there's a syntactic error
+    Identifier iAST = parseIdentifier();
+    vnameAST = parseRestOfPointerVname(iAST);
+    return vnameAST;
+  }
+  
+  Vname parseRestOfPointerVname(Identifier identifierAST) throws SyntaxError {
+    SourcePosition vnamePos = new SourcePosition();
+    vnamePos = identifierAST.position;
+    Vname vAST = new PointerVname(identifierAST, vnamePos);
+
+    while (currentToken.kind == Token.DOT ||
+           currentToken.kind == Token.LBRACKET) {
+
+      if (currentToken.kind == Token.DOT) {
+        acceptIt();
+        Identifier iAST = parseIdentifier();
+        vAST = new DotVname(vAST, iAST, vnamePos); //OHNO (?)
+      } else {
+        acceptIt();
+        Expression eAST = parseExpression();
+        accept(Token.RBRACKET);
+        finish(vnamePos);
+        vAST = new SubscriptVname(vAST, eAST, vnamePos); //OHNO (?)
+      }
+    }
+    return vAST;
+  }
+  
   Vname parseVname () throws SyntaxError {
     Vname vnameAST = null; // in case there's a syntactic error
     Identifier iAST = parseIdentifier();
@@ -780,11 +833,25 @@ public class Parser {
         Identifier iAST = parseIdentifier();
         accept(Token.COLON);
         TypeDenoter tAST = parseTypeDenoter();
+        
+        System.out.println("Holi, soy token: " + currentToken.kind);
         if (currentToken.kind == Token.IDENTIFIER) {
-            TypeDenoter pointerAST = parseTypeDenoter();
+            System.out.println("Holi, si entre ");
+            SimpleTypeDenoter stAST = (SimpleTypeDenoter) tAST;
+            
+            TypeDenoter type = parseTypeDenoter();
+            
+            PointerTypeDenoter ptAST = new PointerTypeDenoter(stAST.I, stAST.position);
+            ptAST.setPointerType(type);
+            
+            finish(declarationPos);
+            declarationAST = new VarDeclaration(iAST, ptAST, declarationPos);
+        } else {
+            System.out.println("Holi, no entre :c");
+            finish(declarationPos);
+            declarationAST = new VarDeclaration(iAST, tAST, declarationPos);
         }
-        finish(declarationPos);
-        declarationAST = new VarDeclaration(iAST, tAST, declarationPos);
+        
       }
       break;
 
@@ -1048,6 +1115,33 @@ public class Parser {
 // TYPE-DENOTERS
 //
 ///////////////////////////////////////////////////////////////////////////////
+  
+  void parsePointerTypeDenoter(PointerTypeDenoter ptAST) throws SyntaxError {
+    TypeDenoter typeAST = null; // in case there's a syntactic error
+    SourcePosition typePos = new SourcePosition();
+
+    start(typePos);
+
+    switch (currentToken.kind) {
+
+    case Token.IDENTIFIER:
+      {
+        Identifier iAST = parseIdentifier();
+        finish(typePos);
+        typeAST = new PointerTypeDenoter(iAST, typePos);
+        
+        ptAST.setPointerType(typeAST);
+      }
+      break;
+      
+    default:
+      //Modificado error para que retorne el tipo de token (valor)
+      syntacticError("\"%\" cannot start a type denoter (token kind: " + currentToken.kind + ")", currentToken.spelling);
+      break;
+
+    }
+    return;
+  }
 
   TypeDenoter parseTypeDenoter() throws SyntaxError {
     TypeDenoter typeAST = null; // in case there's a syntactic error

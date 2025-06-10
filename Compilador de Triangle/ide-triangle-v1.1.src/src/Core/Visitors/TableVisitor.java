@@ -103,10 +103,6 @@ import Triangle.CodeGenerator.TypeRepresentation;
 import Triangle.CodeGenerator.UnknownAddress;
 import Triangle.CodeGenerator.UnknownRoutine;
 import Triangle.CodeGenerator.UnknownValue;
-import Triangle.AbstractSyntaxTrees.PointerExpression;
-import Triangle.AbstractSyntaxTrees.PointerLiteral;
-import Triangle.AbstractSyntaxTrees.PointerTypeDenoter;
-import Triangle.AbstractSyntaxTrees.PointerVname;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -643,6 +639,11 @@ public class TableVisitor implements Visitor {
   }
   
   public Object visitPointerTypeDenoter(PointerTypeDenoter ast, Object obj) { 
+      if (ast.T != null){
+          ast.T.visit(this, null);
+      } else {
+          ast.T = null;
+      }
       return(null);
   }
   
@@ -669,7 +670,7 @@ public class TableVisitor implements Visitor {
   }
   
   public Object visitPointerLiteral(PointerLiteral ast, Object obj) { 
-      return(ast.spelling);
+      return(ast.name);
   }
   
   // </editor-fold>

@@ -23,6 +23,15 @@ public class TypeDeclaration extends Declaration {
     super (thePosition);
     I = iAST;
     T = tAST;
+    PT = null;
+  }
+  
+  public TypeDeclaration(Identifier iAST, TypeDenoter tAST, TypeDenoter ptAST, 
+                         SourcePosition thePosition) {
+    super (thePosition);
+    I = iAST;
+    T = tAST;
+    PT = ptAST;
   }
 
   public Object visit(Visitor v, Object o) {
@@ -31,4 +40,5 @@ public class TypeDeclaration extends Declaration {
 
   public Identifier I;
   public TypeDenoter T;
+  public TypeDenoter PT;
 }

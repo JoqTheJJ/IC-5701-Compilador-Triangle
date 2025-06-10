@@ -69,10 +69,6 @@ import Triangle.AbstractSyntaxTrees.MatchExpression;
 import Triangle.AbstractSyntaxTrees.CaseExpression;
 import Triangle.AbstractSyntaxTrees.DeleteCommand;
 import Triangle.AbstractSyntaxTrees.NewExpression;
-import Triangle.AbstractSyntaxTrees.PointerExpression;
-import Triangle.AbstractSyntaxTrees.PointerLiteral;
-import Triangle.AbstractSyntaxTrees.PointerTypeDenoter;
-import Triangle.AbstractSyntaxTrees.PointerVname;
 
 import Triangle.AbstractSyntaxTrees.PointerExpression;
 import Triangle.AbstractSyntaxTrees.PointerLiteral;
@@ -438,9 +434,16 @@ public class TreeVisitor implements Visitor {
         return(createBinary("Single Field Type Denoter", ast.I, ast.T));
     }
     
-    public Object visitPointerTypeDenoter(PointerTypeDenoter ast, Object obj) { 
-      return(createNullary("Pointer"));
-  }
+    public Object visitPointerTypeDenoter(PointerTypeDenoter ast, Object obj) {
+        String type;
+        
+        if (ast.T == null){
+            type = "null";
+        } else {
+            type = ast.T.toString();
+        }
+        return(createNullary("Pointer<" + type + ">"));
+    }
     
     // </editor-fold>
     
@@ -463,7 +466,7 @@ public class TreeVisitor implements Visitor {
     }
     
     public Object visitPointerLiteral(PointerLiteral ast, Object obj) { 
-      return(createNullary(ast.spelling));
+      return(createNullary(ast.name));
   }
     // </editor-fold>
     

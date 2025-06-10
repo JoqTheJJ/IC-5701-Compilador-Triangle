@@ -364,15 +364,13 @@ public Object visitMatchExpression(MatchExpression ast, Object o) {
 
     // DeleteCommand
     public Object visitDeleteCommand(DeleteCommand ast, Object o) {
-      // TODO: Generar código para liberar memoria del puntero (heap)
         Frame frame = (Frame) o;
-        ast.V.visit(this, frame); // Evalúa el puntero a liberar
+        ast.V.visit(this, frame);
         
-        //System.out.println("EMIT: op=" + op + ", r=" + r + ", n=" + n + ", d=" + d);
-        //emit(Machine.LOADop, 0, Machine.STr, 0);
+        //"EMIT: op=" + op + ", r=" + r + ", n=" + n + ", d=" + d;
         encodeFetch(ast.V, frame, Machine.pointerSize);
         
-        emit(Machine.CALLop, 0, Machine.PBr, Machine.heapFreeAddr); // Llama al sistema
+        emit(Machine.CALLop, 0, Machine.PBr, Machine.heapFreeAddr);
         
         emit(Machine.CALLop, 0, Machine.PBr, Machine.heapPrint);
         return null;
@@ -416,8 +414,23 @@ public Object visitMatchExpression(MatchExpression ast, Object o) {
   }
 
   public Object visitPointerVname(PointerVname ast, Object o) {
-    return null;
-}
+    Frame frame = (Frame) o;
+    
+    /* Normal Vname
+    Integer valSize = (Integer) ast.type.visit(this, null);
+    encodeFetch(ast.V, frame, valSize.intValue());
+    */
+    
+    ast.visit(this, null);
+    
+    encodeFetch(ast, frame, Machine.pointerSize);
+    
+    emit(Machine.CALLop, 0, Machine.PBr, Machine.heapDeRefAddr);
+    
+    emit(Machine.CALLop, 0, Machine.PBr, Machine.heapPrint);
+    
+    return 5;
+  }
 
       public Object visitPointerTypeDenoter(PointerTypeDenoter ast, Object o) {
     // "Supone bien" (Chayanne, 2025)

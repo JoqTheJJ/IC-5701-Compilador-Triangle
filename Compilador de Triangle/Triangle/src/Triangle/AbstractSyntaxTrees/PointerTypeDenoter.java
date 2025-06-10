@@ -5,8 +5,16 @@ import Triangle.SyntacticAnalyzer.SourcePosition;
 
 public class PointerTypeDenoter extends TypeDenoter {
 
-  public PointerTypeDenoter (SourcePosition thePosition) {
+  public PointerTypeDenoter (Identifier iAST, SourcePosition thePosition) {
     super (thePosition);
+    I = iAST;
+    T = null;
+  }
+  
+  public void setPointerType(TypeDenoter pointerType){
+    this.T = pointerType;
+    String type = String.valueOf(T);
+    System.out.println("Holi soy (toString): " + type);
   }
 
   public Object visit (Visitor v, Object o) {
@@ -19,4 +27,7 @@ public class PointerTypeDenoter extends TypeDenoter {
     else
       return (obj != null && obj instanceof PointerTypeDenoter);
   }
+  
+  public Identifier I;
+  public TypeDenoter T;
 }

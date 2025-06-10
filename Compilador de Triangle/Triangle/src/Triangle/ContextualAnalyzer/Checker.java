@@ -243,24 +243,19 @@ public final class Checker implements Visitor {
 }
 
 public Object visitPointerVname(PointerVname ast, Object o) {
-    Declaration binding = idTable.retrieve(ast.I.spelling);
-
-    if (binding == null) {
-        reporter.reportError("\"%\" is not declared", ast.I.spelling, ast.position);
-        ast.type = StdEnvironment.errorType;
-    } else if (binding instanceof VarDeclaration) {
-        VarDeclaration varDecl = (VarDeclaration) binding;
-        ast.type = varDecl.T;
-
-        if (!(ast.type instanceof PointerTypeDenoter)) {
-            reporter.reportError("Variable \"%\" is not a pointer", ast.I.spelling, ast.position);
-            ast.type = StdEnvironment.errorType;
-        }
-    } else {
-        reporter.reportError("\"%\" is not a variable", ast.I.spelling, ast.position);
-        ast.type = StdEnvironment.errorType;
-    }
-
+    //Declaration binding = idTable.retrieve(ast.I.spelling);
+    ast.variable = false;
+    ast.type = StdEnvironment.errorType;
+    Declaration binding = (Declaration) ast.I.visit(this, null);
+    
+    if (binding == null)
+      reportUndeclared(ast.I);
+    else
+      if (binding instanceof VarDeclaration) {
+        ast.type = ((PointerTypeDenoter) ((VarDeclaration) binding).T ).T;
+        ast.variable = true;
+      }
+    
     return ast.type;
 }
 
@@ -1010,7 +1005,7 @@ public Object visitPointerTypeDenoter(PointerTypeDenoter ast, Object o) {
     StdEnvironment.errorType = new ErrorTypeDenoter(dummyPos);
     
     //Pointer ^
-    StdEnvironment.pointerType = new PointerTypeDenoter(dummyPos);
+    StdEnvironment.pointerType = new PointerTypeDenoter(dummyI, dummyPos);
     StdEnvironment.pointerDecl = declareStdType("Pointer", StdEnvironment.pointerType);
     StdEnvironment.nilDecl = declareStdConst("nil", StdEnvironment.pointerType);
 
