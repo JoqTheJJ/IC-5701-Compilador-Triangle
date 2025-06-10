@@ -76,17 +76,13 @@ import Triangle.AbstractSyntaxTrees.Expression;
 //MatchCommand
 import Triangle.AbstractSyntaxTrees.MatchCommand;
 import Triangle.AbstractSyntaxTrees.Case;
-//DeleteCommand
+//MemoryCommand
 import Triangle.AbstractSyntaxTrees.DeleteCommand;
+import Triangle.AbstractSyntaxTrees.NewExpression;
+import Triangle.AbstractSyntaxTrees.DerefExpression;
 //MatchExpression
 import Triangle.AbstractSyntaxTrees.MatchExpression;
 import Triangle.AbstractSyntaxTrees.CaseExpression;
-import Triangle.AbstractSyntaxTrees.NewExpression;
-import Triangle.AbstractSyntaxTrees.PointerExpression;
-import Triangle.AbstractSyntaxTrees.PointerLiteral;
-import Triangle.AbstractSyntaxTrees.PointerTypeDenoter;
-import Triangle.AbstractSyntaxTrees.PointerVname;
-
 //Pointer 
 import Triangle.AbstractSyntaxTrees.PointerExpression;
 import Triangle.AbstractSyntaxTrees.PointerLiteral;
@@ -222,6 +218,11 @@ public class LayoutVisitor implements Visitor {
 // NewExpression
     public Object visitNewExpression(NewExpression ast, Object obj){
       return layoutUnary("NewExp.", ast.type);
+    }
+    
+  //DerefExpression
+    public Object visitDerefExpression(DerefExpression ast, Object obj){
+      return layoutUnary("DerefExp.", ast.PV);
     }
 
   //MatchExpression

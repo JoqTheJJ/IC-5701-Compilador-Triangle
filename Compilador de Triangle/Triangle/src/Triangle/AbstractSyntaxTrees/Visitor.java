@@ -37,6 +37,8 @@ public interface Visitor {
   public abstract Object visitPointerExpression(PointerExpression ast, Object o);
   // PointerTypeDenoter
   public abstract Object visitPointerTypeDenoter(PointerTypeDenoter ast, Object o);
+  // DerefExpression
+  public abstract Object visitDerefExpression(DerefExpression ast, Object o);
   
   
     

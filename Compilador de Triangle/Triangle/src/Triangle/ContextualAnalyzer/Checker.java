@@ -39,7 +39,6 @@ public final class Checker implements Visitor {
     if (! eType.equals(vType)){
         
       if (vType != null && !(vType instanceof AnyTypeDenoter)) {
-        System.out.println("AAAAAAAAAAAAAAA " + (vType instanceof AnyTypeDenoter));
         String error = "assignment incompatibilty from \""+String.valueOf(vType)+"\" & \""+String.valueOf(eType)+"\" ";
         reporter.reportError (error, "", ast.position);
       } 
@@ -190,6 +189,14 @@ public final class Checker implements Visitor {
     ast.type = (TypeDenoter) ast.type.visit(this, null); /* Revisar que type sea un tipo */
 
     return StdEnvironment.pointerType;
+  }
+    
+  //DerefExpression
+    public Object visitDerefExpression(DerefExpression ast, Object o) {
+    
+    ast.type = (TypeDenoter) ast.PV.visit(this, null);
+
+    return StdEnvironment.anyType; //anyType
   }
 
 

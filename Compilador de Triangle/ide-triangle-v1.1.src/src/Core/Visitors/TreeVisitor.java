@@ -67,13 +67,18 @@ import Triangle.AbstractSyntaxTrees.Case;
 //MatchExpression
 import Triangle.AbstractSyntaxTrees.MatchExpression;
 import Triangle.AbstractSyntaxTrees.CaseExpression;
+
+//Memory
+import Triangle.AbstractSyntaxTrees.DerefExpression;
 import Triangle.AbstractSyntaxTrees.DeleteCommand;
 import Triangle.AbstractSyntaxTrees.NewExpression;
 
+//Pointers
 import Triangle.AbstractSyntaxTrees.PointerExpression;
 import Triangle.AbstractSyntaxTrees.PointerLiteral;
 import Triangle.AbstractSyntaxTrees.PointerTypeDenoter;
 import Triangle.AbstractSyntaxTrees.PointerVname;
+
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
 import Triangle.AbstractSyntaxTrees.SequentialDeclaration;
 import Triangle.AbstractSyntaxTrees.SimpleTypeDenoter;
@@ -274,6 +279,10 @@ public class TreeVisitor implements Visitor {
     
     public Object visitPointerExpression(PointerExpression ast, Object obj) {
         return(createUnary("Pointer Expression", ast.PL));
+    }
+    
+    public Object visitDerefExpression(DerefExpression ast, Object obj) {
+        return(createUnary("Deref Expression", ast.PV));
     }
     // </editor-fold>
     

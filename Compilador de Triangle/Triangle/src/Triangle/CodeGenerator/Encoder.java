@@ -118,6 +118,8 @@ import Triangle.AbstractSyntaxTrees.Case;
 //Match Expression
 import Triangle.AbstractSyntaxTrees.MatchExpression;
 import Triangle.AbstractSyntaxTrees.CaseExpression;
+//Memory
+import Triangle.AbstractSyntaxTrees.DerefExpression;
 import Triangle.AbstractSyntaxTrees.DeleteCommand;
 import Triangle.AbstractSyntaxTrees.NewExpression;
 
@@ -396,6 +398,12 @@ public Object visitMatchExpression(MatchExpression ast, Object o) {
       //System.out.println("[Holi, sobrevivi al NEW :'D]");
     return Machine.pointerSize;
     }
+    
+  public Object visitDerefExpression(DerefExpression ast, Object o) {
+    //TODO
+
+    return null;
+  }
   
    
   // Expressions

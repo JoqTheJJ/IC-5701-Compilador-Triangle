@@ -69,12 +69,15 @@ import Triangle.AbstractSyntaxTrees.Case;
 //MatchExpression
 import Triangle.AbstractSyntaxTrees.MatchExpression;
 import Triangle.AbstractSyntaxTrees.CaseExpression;
+
+//Memory and pointers
 import Triangle.AbstractSyntaxTrees.DeleteCommand;
 import Triangle.AbstractSyntaxTrees.NewExpression;
 import Triangle.AbstractSyntaxTrees.PointerExpression;
 import Triangle.AbstractSyntaxTrees.PointerLiteral;
 import Triangle.AbstractSyntaxTrees.PointerTypeDenoter;
 import Triangle.AbstractSyntaxTrees.PointerVname;
+import Triangle.AbstractSyntaxTrees.DerefExpression;
 
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
 import Triangle.AbstractSyntaxTrees.SequentialDeclaration;
@@ -316,6 +319,11 @@ public class TableVisitor implements Visitor {
   public Object visitPointerExpression(PointerExpression ast, Object obj) { 
       ast.PL.visit(this, null);
       
+      return(null);
+  }
+  
+  public Object visitDerefExpression(DerefExpression ast, Object obj) { 
+      ast.PV.visit(this, null);
       return(null);
   }
   // </editor-fold>
