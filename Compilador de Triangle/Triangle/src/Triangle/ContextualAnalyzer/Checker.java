@@ -283,6 +283,7 @@ public Object visitPointerVname(PointerVname ast, Object o) {
 
 
 public Object visitPointerTypeDenoter(PointerTypeDenoter ast, Object o) {
+    ast.T.visit(this, null);
     return StdEnvironment.pointerType;
 }
 
@@ -1044,8 +1045,8 @@ public Object visitPointerTypeDenoter(PointerTypeDenoter ast, Object o) {
     StdEnvironment.anyType = new AnyTypeDenoter(dummyPos);
     StdEnvironment.errorType = new ErrorTypeDenoter(dummyPos);
     
-    //Pointer ^
-    StdEnvironment.pointerType = new PointerTypeDenoter(new ErrorTypeDenoter(dummyPos), dummyPos);
+    //Pointer ^StdEnvironment.anyType
+    StdEnvironment.pointerType = new PointerTypeDenoter(StdEnvironment.anyType, dummyPos);
     StdEnvironment.pointerDecl = declareStdType("Pointer", StdEnvironment.pointerType);
     StdEnvironment.nilDecl = declareStdConst("nil", StdEnvironment.pointerType);
 

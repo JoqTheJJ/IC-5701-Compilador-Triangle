@@ -1,8 +1,4 @@
 let
-  var p1 : Pointer;
-  var p2 : Pointer;
-  var p3 : Pointer;
-
   var s : Char;
   
   type a ~
@@ -21,7 +17,11 @@ let
      x : Integer,
      y : Integer,
      z : Integer
-   end
+   end;
+
+  var p1 : Pointer a;
+  var p2 : Pointer b;
+  var p3 : Pointer c
 
 in
 begin

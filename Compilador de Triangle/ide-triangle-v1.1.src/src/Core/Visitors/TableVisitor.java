@@ -72,10 +72,6 @@ import Triangle.AbstractSyntaxTrees.CaseExpression;
 import Triangle.AbstractSyntaxTrees.DeleteCommand;
 import Triangle.AbstractSyntaxTrees.DerefVname;
 import Triangle.AbstractSyntaxTrees.NewExpression;
-import Triangle.AbstractSyntaxTrees.PointerExpression;
-import Triangle.AbstractSyntaxTrees.PointerLiteral;
-import Triangle.AbstractSyntaxTrees.PointerTypeDenoter;
-import Triangle.AbstractSyntaxTrees.PointerVname;
 
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
 import Triangle.AbstractSyntaxTrees.SequentialDeclaration;
@@ -650,6 +646,8 @@ public class TableVisitor implements Visitor {
   }
   
   public Object visitPointerTypeDenoter(PointerTypeDenoter ast, Object obj) { 
+      ast.T.visit(this, null);
+      
       return(null);
   }
   

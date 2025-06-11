@@ -70,10 +70,6 @@ import Triangle.AbstractSyntaxTrees.CaseExpression;
 import Triangle.AbstractSyntaxTrees.DeleteCommand;
 import Triangle.AbstractSyntaxTrees.DerefVname;
 import Triangle.AbstractSyntaxTrees.NewExpression;
-import Triangle.AbstractSyntaxTrees.PointerExpression;
-import Triangle.AbstractSyntaxTrees.PointerLiteral;
-import Triangle.AbstractSyntaxTrees.PointerTypeDenoter;
-import Triangle.AbstractSyntaxTrees.PointerVname;
 
 import Triangle.AbstractSyntaxTrees.PointerExpression;
 import Triangle.AbstractSyntaxTrees.PointerLiteral;
@@ -445,7 +441,7 @@ public class TreeVisitor implements Visitor {
     }
     
     public Object visitPointerTypeDenoter(PointerTypeDenoter ast, Object obj) { 
-      return(createNullary("Pointer"));
+      return(createNullary("PointerTypeDenoter<" + ast.T.toString() + ">"));
   }
     
     // </editor-fold>

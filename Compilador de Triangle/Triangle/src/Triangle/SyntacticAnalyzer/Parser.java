@@ -1117,7 +1117,7 @@ public class Parser {
             TypeDenoter pointedType = parseTypeDenoter();
             finish(typePos);
             typeAST = new PointerTypeDenoter(pointedType, typePos);
-            System.out.println("Detecto un puntero con tipo: " + ((PointerTypeDenoter) typeAST).T.toString() + "AAAAAAAAAAAAAAA");
+            System.out.println("Detecto un puntero con tipo: " + ((PointerTypeDenoter) typeAST).T.toString() + " AAAAAAAAAAAAAAA");
         } else {
             finish(typePos);
             typeAST = new SimpleTypeDenoter(iAST, typePos);

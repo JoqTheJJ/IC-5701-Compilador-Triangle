@@ -84,10 +84,6 @@ import Triangle.AbstractSyntaxTrees.MatchExpression;
 import Triangle.AbstractSyntaxTrees.CaseExpression;
 import Triangle.AbstractSyntaxTrees.DerefVname;
 import Triangle.AbstractSyntaxTrees.NewExpression;
-import Triangle.AbstractSyntaxTrees.PointerExpression;
-import Triangle.AbstractSyntaxTrees.PointerLiteral;
-import Triangle.AbstractSyntaxTrees.PointerTypeDenoter;
-import Triangle.AbstractSyntaxTrees.PointerVname;
 
 //Pointer 
 import Triangle.AbstractSyntaxTrees.PointerExpression;
@@ -290,7 +286,7 @@ public class LayoutVisitor implements Visitor {
   
 public Object visitPointerTypeDenoter(PointerTypeDenoter ast, Object obj) {
     // Suponiendo que un puntero ocupa una palabra
-    return layoutNullary("pointer");
+    return layoutNullary("PointerTypeDenoter<" + ast.T.toString() + ">");
 }
 
  public Object visitPointerExpression(PointerExpression ast, Object obj) {
