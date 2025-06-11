@@ -38,6 +38,11 @@ public class ArrayTypeDenoter extends TypeDenoter {
     else
       return false;
   }
+  
+    @Override
+    public String toString() {
+        return "ArrayTypeDenoter<" + this.T.toString() + ">";
+    }
 
   public IntegerLiteral IL;
   public TypeDenoter T;

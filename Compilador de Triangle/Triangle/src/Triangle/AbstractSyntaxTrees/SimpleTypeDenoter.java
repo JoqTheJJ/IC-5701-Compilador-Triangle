@@ -30,6 +30,11 @@ public class SimpleTypeDenoter extends TypeDenoter {
   public boolean equals (Object obj) {
     return false; // should not happen
   }
+  
+    @Override
+    public String toString() {
+        return "SimpleTypeDenoter<" + this.I.spelling.toString() + ">";
+    }
 
   public Identifier I;
 }

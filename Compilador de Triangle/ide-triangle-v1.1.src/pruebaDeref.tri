@@ -1,0 +1,13 @@
+let
+  var n : Integer;
+  type a ~
+    record
+      x : Integer
+  end;
+  var p1 : Pointer a
+in
+begin
+  p1 := new a;
+  n := #p1.x;
+  return p1
+end

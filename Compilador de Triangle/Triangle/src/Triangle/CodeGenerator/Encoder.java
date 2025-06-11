@@ -118,7 +118,21 @@ import Triangle.AbstractSyntaxTrees.Case;
 //Match Expression
 import Triangle.AbstractSyntaxTrees.MatchExpression;
 import Triangle.AbstractSyntaxTrees.CaseExpression;
+import Triangle.AbstractSyntaxTrees.DeleteCommand;
+import Triangle.AbstractSyntaxTrees.DerefVname;
+import Triangle.AbstractSyntaxTrees.NewExpression;
+import Triangle.AbstractSyntaxTrees.PointerExpression;
+import Triangle.AbstractSyntaxTrees.PointerLiteral;
+import Triangle.AbstractSyntaxTrees.PointerTypeDenoter;
+import Triangle.AbstractSyntaxTrees.PointerVname;
 
+//Pointer 
+import Triangle.AbstractSyntaxTrees.PointerExpression;
+import Triangle.AbstractSyntaxTrees.PointerLiteral;
+import Triangle.AbstractSyntaxTrees.PointerTypeDenoter;
+import Triangle.AbstractSyntaxTrees.PointerVname;
+import Triangle.AbstractSyntaxTrees.ReturnCommand;
+import Triangle.AbstractSyntaxTrees.TypeDenoter;
 
 public final class Encoder implements Visitor {
 
@@ -161,7 +175,14 @@ public final class Encoder implements Visitor {
 
   public Object visitLetCommand(LetCommand ast, Object o) {
     Frame frame = (Frame) o;
+    //System.out.println("Holi, llegue al let");
+    //System.out.println("Holi, soy leti un let command: " + ast);
+    
     int extraSize = ((Integer) ast.D.visit(this, frame)).intValue();
+    //System.out.println("Holi, soy D de let command: " + ast.D);
+    //System.out.println("Holi, soy un #@$%_&$%@: " + ast.D.visit(this, frame));
+    //System.out.println("Holi, soy el size de un let command: " + extraSize);
+    
     ast.C.visit(this, new Frame(frame, extraSize));
     if (extraSize > 0)
       emit(Machine.POPop, 0, 0, extraSize);
@@ -344,12 +365,108 @@ public Object visitMatchExpression(MatchExpression ast, Object o) {
     return Integer.valueOf(1);
 }
 
+    // DeleteCommand
+    public Object visitDeleteCommand(DeleteCommand ast, Object o) {
+        Frame frame = (Frame) o;
+        ast.V.visit(this, frame); // Evalúa el puntero a liberar
+        
+        encodeFetch(ast.V, frame, Machine.pointerSize);
+        
+        emit(Machine.CALLop, 0, Machine.PBr, Machine.heapFreeAddr); // Llama al sistema
+        
+        emit(Machine.CALLop, 0, Machine.PBr, Machine.heapPrint);
+        return null;
+    }
+
+    // NewExpression
+    public Object visitNewExpression(NewExpression ast, Object o){
+      Frame frame = (Frame) o;
+      
+      int size = ((Integer) ast.type.visit(this, null)).intValue();
+        
+      System.out.println("[Holi, bienvenido a NEW :D]");
+      System.out.println("Holi, soy size de: " + ast);
+      System.out.println("Holi, mi tipo es: " + ast.type);
+      System.out.println("Holi, mi tamaño: " + size);
+      
+      //System.out.println("EMIT: op=" + op + ", r=" + r + ", n=" + n + ", d=" + d);
+      emit(Machine.LOADLop, 0, 0, size); //size
+      //System.out.println("EMIT: op=" + op + ", r=" + r + ", n=" + n + ", d=" + d);
+      emit(Machine.CALLop, 0, Machine.PBr, Machine.heapAllocAddr);
+      
+      //System.out.println("Holi, popie a: " + " nada :P");
+      emit(Machine.POPop, 1, 0, 0);
+      
+      emit(Machine.CALLop, 0, Machine.PBr, Machine.heapPrint);
+      
+      //System.out.println("[Holi, sobrevivi al NEW :'D]");
+    return Machine.pointerSize;
+    }
+    
+    //DerefVname
+    public Object visitDerefVname(DerefVname ast, Object o) {
+        Frame frame = (Frame) o;
+        
+        System.out.println("ENTRANDO A DEREF AAAAAAAAAAAAA");
+        
+        encodeFetch(ast.V, frame, Machine.pointerSize);
+        
+        emit(Machine.CALLop, 0, Machine.PBr, Machine.heapDeRefAddr);
+        
+        PointerTypeDenoter ptrType = (PointerTypeDenoter) ast.V.type;
+        TypeDenoter objectType = ptrType.T;
+        
+        int size = ((Integer) objectType.visit(this, null)).intValue();
+        
+        return new UnknownValue(size, 0, 0);
+    }
+    
+    public Object visitReturnCommand(ReturnCommand ast, Object o) {
+        Frame frame = (Frame) o;
+        
+        System.out.println("AAAAAAAAAAAAA ENTRANDO A RETURN");
+        
+        ast.V.visit(this, frame); // Evalúa el puntero a liberar
+        
+        encodeFetch(ast.V, frame, Machine.pointerSize);
+        
+        emit(Machine.CALLop, 0, Machine.PBr, Machine.heapStoreOp); // Llama al sistema
+        
+        emit(Machine.CALLop, 0, Machine.PBr, Machine.heapPrint);
+        return null;
+    }
   
    
   // Expressions
   public Object visitArrayExpression(ArrayExpression ast, Object o) {
     ast.type.visit(this, null);
     return ast.AA.visit(this, o);
+  }
+  
+  //Pointer 
+  public Object visitPointerLiteral(PointerLiteral ast, Object o) {
+    return null;
+  }
+
+  public Object visitPointerVname(PointerVname ast, Object o) {
+    return null;
+}
+
+      public Object visitPointerTypeDenoter(PointerTypeDenoter ast, Object o) {
+    // "Supone bien" (Chayanne, 2025)
+    if (ast.entity == null) {
+      ast.entity = new TypeRepresentation(Machine.pointerSize);
+      writeTableDetails(ast);
+    }
+    return new Integer(Machine.pointerSize);
+  }
+
+  public Object visitPointerExpression(PointerExpression ast, Object o) {
+    // Suponiendo que un puntero ocupa una palabra
+    Frame frame = (Frame) o;
+    Integer valSize = (Integer) ast.type.visit(this, null);
+    emit(Machine.LOADLop, 0, 0, Integer.parseInt(ast.PL.spelling));
+    return valSize;
   }
 
   public Object visitBinaryExpression(BinaryExpression ast, Object o) {
@@ -537,6 +654,10 @@ public Object visitMatchExpression(MatchExpression ast, Object o) {
   public Object visitVarDeclaration(VarDeclaration ast, Object o) {
     Frame frame = (Frame) o;
     int extraSize;
+    
+    if (ast.T instanceof PointerTypeDenoter) {
+        emit(Machine.CALLop, 0, Machine.PBr, Machine.savePointerAddr);
+    }
 
     extraSize = ((Integer) ast.T.visit(this, null)).intValue();
     emit(Machine.PUSHop, 0, 0, extraSize);
@@ -959,6 +1080,8 @@ public Object visitMatchExpression(MatchExpression ast, Object o) {
 
   private final void elaborateStdEnvironment() {
     tableDetailsReqd = false;
+    elaborateStdConst(StdEnvironment.nilDecl, Machine.nilRep); //nil value assignment
+    
     elaborateStdConst(StdEnvironment.falseDecl, Machine.falseRep);
     elaborateStdConst(StdEnvironment.trueDecl, Machine.trueRep);
     elaborateStdPrimRoutine(StdEnvironment.notDecl, Machine.notDisplacement);
@@ -1026,6 +1149,8 @@ public Object visitMatchExpression(MatchExpression ast, Object o) {
 
   // Appends an instruction, with the given fields, to the object code.
   private void emit (int op, int n, int r, int d) {
+    //System.out.println("Holi soy EMIT y: op=" + op + ", r=" + r + ", n=" + n + ", d=" + d);
+    
     Instruction nextInstr = new Instruction();
     if (n > 255) {
         reporter.reportRestriction("length of operand can't exceed 255 words");

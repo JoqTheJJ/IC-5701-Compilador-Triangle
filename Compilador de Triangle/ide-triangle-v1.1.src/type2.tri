@@ -1,0 +1,9 @@
+let
+  type MyInt ~ Integer;
+  var x: MyInt
+in
+begin
+  x := 2;
+  putint(x);
+  put('a')
+end

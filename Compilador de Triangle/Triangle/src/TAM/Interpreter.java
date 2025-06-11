@@ -19,6 +19,10 @@ import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+// Imports Agregados
+import java.util.Arrays;
+import java.util.List;
+import java.util.ArrayList;
 
 public class Interpreter {
 
@@ -28,7 +32,8 @@ public class Interpreter {
 
 // DATA STORE
 
-  static int[] data = new int[1024];
+  static int[] data = new int[2048];                    // MOD
+  static List<Integer> pointers = new ArrayList<>();    // AGREGADO
 
 
 // DATA STORE REGISTERS AND OTHER REGISTERS
@@ -36,10 +41,11 @@ public class Interpreter {
   final static int
     CB = 0,
     SB = 0,
-    HB = 1024;  // = upper bound of data array + 1
+    HB = 1024,  // start of dynamic memory
+    HL = 2048;  // upper bound of dynamic memory + 1 // Agregado
 
   static int
-    CT, CP, ST, HT, LB, status;
+    CT, CP, ST, HT, LB, status, HP; // HP = Heap Pointer // Agregado
 
   // status values
   final static int
@@ -73,6 +79,13 @@ public class Interpreter {
         return HT;
       case Machine.LBr:
         return LB;
+      
+      //Añadido registros memoria dinamico
+      case Machine.HLr:
+        return HL;
+      case Machine.HPr:
+        return HP;
+        
       case Machine.L1r:
         return data[LB];
       case Machine.L2r:
@@ -429,6 +442,113 @@ public class Interpreter {
       case Machine.disposeDisplacement:
         ST = ST - 1; // no action taken at present
         break;
+      case Machine.heapAllocAddr:
+          size = data[ST - 1]; // Ocupo el espacio del objeto al inicio de la pila estatica
+          System.out.println("Holi, el size en la pila es de: " + size);
+          
+          if (HP + size + 1 >= HL) { // Validar que hay espacio
+              status = failedDataStoreFull;
+          } else {
+              data[HP] = size; // Guarda un bite con el tamaño del objeto
+              data[ST - 1] = HP; // Deja en memeoria la direccion de memoria del objeto
+              HP += size + 1; // Reserva el espacio de memoria para el objeto y su bite de size
+          }
+          break;
+      case Machine.heapFreeAddr:
+          addr = data[ST - 1]; // Ocupo la direccion que debo limpiar en el tope de la pila
+          ST--; // Liberar memoria
+          System.out.println("Holi, soy addr de delete y tengo: " + addr);
+          
+          if (HB > addr || addr >= HL) { // Validacion de si el objeto esta dentro del heap dinamico HB <= addr < HL
+              status = failedInvalidInstruction;
+              break;
+          }
+          
+          size = data[addr] + 1; // Obtiene el espacio del objeto
+          
+          for (int i = addr; i < HP - size; i++) { // Baja los objetos segun el size
+              data[i] = data[i + size];
+          }
+          
+          for (int i = HP - size; i < HP; i++) { // Limpia los espacios desocupados
+              data[i] = 0;
+          }
+          
+          for (int i = 0; i < pointers.size(); i++) { // Actualizar los punteros que movimos
+              int pointedAddr = data[pointers.get(i)];
+              if (addr < pointedAddr) {
+                  data[pointers.get(i)] -= size;
+              }
+          }
+          
+          HP -= size; // Liberar memoria
+          break;
+      case Machine.savePointerAddr:
+          pointers.add(ST);
+          break;
+      case Machine.heapDeRefAddr:
+          addr = data[ST - 1]; // Ocupo la direccion que debo recuperar
+          ST--; // Liberar memoria
+          
+          if (HB > addr || addr >= HL) { // Validacion de si el objeto esta dentro del heap dinamico HB <= addr < HL
+              status = failedInvalidInstruction;
+              break;
+          }
+          
+          size = data[addr]; //Obtengo el espacio del objeto en memoria
+          
+          if (ST + size >= HB) { // Validacion de si hay espacio suficiente en la pila estatica
+              status = failedDataStoreFull;
+              break;
+          }
+          
+          for (int i = 0; i < size; i++) { //Copia el objeto de la memoria dinamica a la memoria estatica
+              data[ST + i] = data[addr + i + 1];
+          }
+          
+          ST = ST + size; // Aumentamos el puntero de la pila
+          break;
+      case Machine.heapStoreOp:
+          addr = data[ST - 1]; // Ocupo la direccion que debo recuperar
+          ST--;
+          
+          if (HB > addr || addr >= HL) { // Validacion de si el objeto esta dentro del heap dinamico HB <= addr < HL
+              status = failedInvalidInstruction;
+              break;
+          }
+          
+          size = data[addr]; // Obtengo el espacio del objeto en memoria
+          
+          for (int i = 0; i < size; i++) { // Movemos el objeto a la memoria dinamica
+              data[addr + i + 1] = data[ST - size + i];
+          }
+          
+          ST = ST - size; // Eliminamos el objeto de la memoria estatica
+          
+          break;
+      case Machine.heapPrint:
+          System.out.println("Memoria Dinamica");
+          System.out.println("----------------------------------------");
+          for (int i = HB; i < HP; i++) {
+              System.out.print("| [" + i + "] = " + data[i]);
+              if (i == HB) {
+                  System.out.println("   <-  [HB]");
+              } else {
+                  System.out.println("");
+              }
+          }
+          System.out.println("----------------------------------------");
+          System.out.println("[HP] : " + HP + "/2048");
+          System.out.println("----------------------------------------");
+          System.out.println("[HL] : " + HL);
+          System.out.print("Punteros Activos: ");
+          for (int i = 0; i < pointers.size(); i++) {
+              int x = pointers.get(i);
+              System.out.print("[" + x + " | " + data[x] + "]\t");
+          }
+          System.out.println("Adios :D\n");
+          
+          break;
     }
   }
 
@@ -439,10 +559,11 @@ public class Interpreter {
     int op, r, n, d, addr, index;
 
     // Initialize registers ...
-    ST = SB;
-    HT = HB;
-    LB = SB;
-    CP = CB;
+    ST = SB;    // 0
+    HT = HB;    // 1024 Crece hacia abajo
+    LB = SB;    // 0
+    CP = CB;    // 0
+    HP = HB;    // 1024 Crece hacia arriba // Agregado
     status = running;
     do {
       // Fetch instruction ...
@@ -452,6 +573,10 @@ public class Interpreter {
       r = currentInstr.r;
       n = currentInstr.n;
       d = currentInstr.d;
+      
+      System.out.println("Holi, mi status: " + status);
+      System.out.println("para mi proximo truco de magia: op=" + op + ", r=" + r + ", n=" + n + ", d=" + d);
+      
       // Execute instruction ...
       switch (op) {
         case Machine.LOADop:
@@ -501,6 +626,10 @@ public class Interpreter {
           break;
         case Machine.CALLop:
           addr = d + content(r);
+          
+          System.out.println("Holi, soy PB y contengo: " + content(r));
+          System.out.println("Holi, soy addr: " + addr);
+          
           if (addr >= Machine.PB) {
             callPrimitive(addr - Machine.PB);
             CP = CP + 1;
@@ -617,6 +746,8 @@ public class Interpreter {
 
   public static void main(String[] args) {
     System.out.println("********** TAM Interpreter (Java Version 2.1) HOLA MUNDO! **********");
+    
+    pointers.clear();
 
     if (args.length == 1)
       objectName = args[0];

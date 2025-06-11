@@ -1,0 +1,10 @@
+let
+  var p : Pointer;
+  var c : Integer;
+  var q : Pointer;
+  var t : Pointer
+in
+begin
+  p := nil;
+  q := p
+end

@@ -64,8 +64,8 @@ public final class Machine {
   public final static int
     CB = 0,
     PB = 1024,  // = upper bound of code array + 1
-    PT = 1052;  // = PB + 28
-
+    PT = 1058;  // = PB + 28 + 3 + 3 // MOD
+  
 // REGISTER NUMBERS
 
   public final static int
@@ -84,7 +84,11 @@ public final class Machine {
     L4r = LBr + 4,
     L5r = LBr + 5,
     L6r = LBr + 6,
-    CPr = 15;
+    CPr = 15,
+          
+    //Añadido
+    HLr = 16,
+    HPr = 17;
 
 
 // DATA REPRESENTATION
@@ -93,6 +97,7 @@ public final class Machine {
     booleanSize = 1,
     characterSize = 1,
     integerSize = 1,
+    pointerSize = 1,
     addressSize = 1,
     closureSize = 2 * addressSize,
 
@@ -100,6 +105,7 @@ public final class Machine {
 
     falseRep = 0,
     trueRep = 1,
+    nilRep = 99999,
     maxintRep = 32767;
 
 
@@ -133,6 +139,12 @@ public final class Machine {
     getintDisplacement = 25,
     putintDisplacement = 26,
     newDisplacement = 27,
-    disposeDisplacement = 28;
-
+    disposeDisplacement = 28,
+    heapAllocAddr = 29,         // AGREGADO
+    heapFreeAddr = 30,          // AGREGADO
+    savePointerAddr = 31,       // AGREGADO
+    heapDeRefAddr = 32,         // AGREGADO
+    heapStoreOp = 33,           // AGREGADO
+    heapPrint = 34;             // AGREGADO
+    
 }

@@ -28,8 +28,17 @@ public interface Visitor {
   public abstract Object visitMatchCommand(MatchCommand ast, Object o);
   // MatchExpression
   public abstract Object visitMatchExpression(MatchExpression ast, Object o);
-    
-    
+  
+  // PointerVname
+  public abstract Object visitPointerVname(PointerVname ast, Object o);
+  // PointerLiteral
+  public abstract Object visitPointerLiteral(PointerLiteral ast, Object o);
+  // PointerLiteral
+  public abstract Object visitPointerExpression(PointerExpression ast, Object o);
+  // PointerTypeDenoter
+  public abstract Object visitPointerTypeDenoter(PointerTypeDenoter ast, Object o);
+  
+  
     
 
   // Commands
@@ -40,6 +49,9 @@ public interface Visitor {
   public abstract Object visitLetCommand(LetCommand ast, Object o);
   public abstract Object visitSequentialCommand(SequentialCommand ast, Object o);
   public abstract Object visitWhileCommand(WhileCommand ast, Object o);
+  public abstract Object visitDeleteCommand(DeleteCommand ast, Object o);
+  public abstract Object visitReturnCommand(ReturnCommand ast, Object o);
+
   
   // Expressions
   public abstract Object visitArrayExpression(ArrayExpression ast, Object o);
@@ -53,6 +65,7 @@ public interface Visitor {
   public abstract Object visitRecordExpression(RecordExpression ast, Object o);
   public abstract Object visitUnaryExpression(UnaryExpression ast, Object o);
   public abstract Object visitVnameExpression(VnameExpression ast, Object o);
+  public abstract Object visitNewExpression(NewExpression ast, Object o);
 
   // Declarations
   public abstract Object visitBinaryOperatorDeclaration(BinaryOperatorDeclaration ast, Object o);
@@ -115,6 +128,7 @@ public interface Visitor {
   public abstract Object visitDotVname(DotVname ast, Object o);
   public abstract Object visitSimpleVname(SimpleVname ast, Object o);
   public abstract Object visitSubscriptVname(SubscriptVname ast, Object o);
+  public abstract Object visitDerefVname(DerefVname ast, Object o);
 
   // Programs
   public abstract Object visitProgram(Program ast, Object o);

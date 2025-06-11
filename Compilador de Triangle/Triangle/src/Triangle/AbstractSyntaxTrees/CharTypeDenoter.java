@@ -32,4 +32,9 @@ public class CharTypeDenoter extends TypeDenoter {
     else
       return (obj != null && obj instanceof CharTypeDenoter);
   }
+  
+      @Override
+    public String toString() {
+        return "CharTypeDenoter";
+    }
 }

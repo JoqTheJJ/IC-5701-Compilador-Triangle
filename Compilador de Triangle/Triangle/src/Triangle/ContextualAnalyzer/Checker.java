@@ -161,6 +161,47 @@ public final class Checker implements Visitor {
   return null;
   }
   
+  //DeleteCommand
+    public Object visitDeleteCommand(DeleteCommand ast, Object o) {
+  // Verifica que la variable exista y obtén su tipo
+    TypeDenoter vType = (TypeDenoter) ast.V.visit(this, null);
+
+    // Verifica que sea un puntero
+    if (!(vType instanceof PointerTypeDenoter)) {
+      reporter.reportError("\"delete\" solo puede aplicarse a variables puntero", "", ast.position);
+    }
+
+    return null;
+  }
+    
+  //DerefVname
+    public Object visitDerefVname(DerefVname ast, Object o) {
+        TypeDenoter pointerType = (TypeDenoter) ast.V.visit(this, o);
+        
+        if (!(pointerType instanceof PointerTypeDenoter)) {
+            reporter.reportError("Desreferenciación solo es válida sobre punteros", "", ast.position);
+            ast.type = StdEnvironment.errorType;
+            return StdEnvironment.errorType;
+        }
+        
+        TypeDenoter pointedType = ((PointerTypeDenoter) pointerType).T;
+        
+        ast.type = pointedType;
+        
+        return pointedType;
+    }
+    
+  //NewCommand
+    public Object visitNewExpression(NewExpression ast, Object o) {
+    
+    ast.type = (TypeDenoter) ast.type.visit(this, null); /* Revisar que type sea un tipo */
+
+    return StdEnvironment.pointerType;
+  }
+
+
+
+  
   //MatchExpression 
   public Object visitMatchExpression(MatchExpression  ast, Object o) {
     TypeDenoter exprType = (TypeDenoter) ast.E.visit(this, null);
@@ -206,6 +247,46 @@ public final class Checker implements Visitor {
 
   // Returns the TypeDenoter denoting the type of the expression. Does
   // not use the given object.
+  
+  //PointerExpression
+  public Object visitPointerExpression(PointerExpression ast, Object o){
+      ast.type = StdEnvironment.pointerType;
+      return ast.type;
+  }
+  
+  public Object visitPointerLiteral(PointerLiteral ast, Object o) {
+    // Por ahora tratamos todos los literales puntero como del tipo puntero genérico
+    return StdEnvironment.pointerType;
+}
+
+public Object visitPointerVname(PointerVname ast, Object o) {
+    Declaration binding = idTable.retrieve(ast.I.spelling);
+
+    if (binding == null) {
+        reporter.reportError("\"%\" is not declared", ast.I.spelling, ast.position);
+        ast.type = StdEnvironment.errorType;
+    } else if (binding instanceof VarDeclaration) {
+        VarDeclaration varDecl = (VarDeclaration) binding;
+        ast.type = varDecl.T;
+
+        if (!(ast.type instanceof PointerTypeDenoter)) {
+            reporter.reportError("Variable \"%\" is not a pointer", ast.I.spelling, ast.position);
+            ast.type = StdEnvironment.errorType;
+        }
+    } else {
+        reporter.reportError("\"%\" is not a variable", ast.I.spelling, ast.position);
+        ast.type = StdEnvironment.errorType;
+    }
+
+    return ast.type;
+}
+
+
+public Object visitPointerTypeDenoter(PointerTypeDenoter ast, Object o) {
+    ast.T.visit(this, null);
+    return StdEnvironment.pointerType;
+}
+
 
   public Object visitArrayExpression(ArrayExpression ast, Object o) {
     TypeDenoter elemType = (TypeDenoter) ast.AA.visit(this, null);
@@ -301,6 +382,18 @@ public final class Checker implements Visitor {
     FieldTypeDenoter rType = (FieldTypeDenoter) ast.RA.visit(this, null);
     ast.type = new RecordTypeDenoter(rType, ast.position);
     return ast.type;
+  }
+  
+  public Object visitReturnCommand(ReturnCommand ast, Object o) {
+    // Verifica que la variable exista y obtén su tipo
+    TypeDenoter vType = (TypeDenoter) ast.V.visit(this, null);
+
+    // Verifica que sea un puntero
+    if (!(vType instanceof PointerTypeDenoter)) {
+      reporter.reportError("\"return\" solo puede aplicarse a variables puntero", "", ast.position);
+    }
+
+    return null;
   }
 
   public Object visitUnaryExpression(UnaryExpression ast, Object o) {
@@ -732,6 +825,12 @@ public final class Checker implements Visitor {
     ast.type = null;
     TypeDenoter vType = (TypeDenoter) ast.V.visit(this, null);
     ast.variable = ast.V.variable;
+    if (vType instanceof PointerTypeDenoter) {
+        vType = ((PointerTypeDenoter) vType).T;
+        System.out.println("Puntero apunta a tipo: " + vType.toString());
+    } else {
+        System.out.println("No era un puntero :/ era un: " + vType.toString());
+    }
     if (! (vType instanceof RecordTypeDenoter))
       reporter.reportError ("record expected here", "", ast.V.position);
     else {
@@ -945,6 +1044,11 @@ public final class Checker implements Visitor {
     StdEnvironment.charType = new CharTypeDenoter(dummyPos);
     StdEnvironment.anyType = new AnyTypeDenoter(dummyPos);
     StdEnvironment.errorType = new ErrorTypeDenoter(dummyPos);
+    
+    //Pointer ^StdEnvironment.anyType
+    StdEnvironment.pointerType = new PointerTypeDenoter(StdEnvironment.anyType, dummyPos);
+    StdEnvironment.pointerDecl = declareStdType("Pointer", StdEnvironment.pointerType);
+    StdEnvironment.nilDecl = declareStdConst("nil", StdEnvironment.pointerType);
 
     StdEnvironment.booleanDecl = declareStdType("Boolean", StdEnvironment.booleanType);
     StdEnvironment.falseDecl = declareStdConst("false", StdEnvironment.booleanType);

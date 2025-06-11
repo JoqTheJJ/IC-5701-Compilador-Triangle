@@ -64,6 +64,7 @@ import Triangle.AbstractSyntaxTrees.ProcFormalParameter;
 import Triangle.AbstractSyntaxTrees.Program;
 import Triangle.AbstractSyntaxTrees.RecordExpression;
 import Triangle.AbstractSyntaxTrees.RecordTypeDenoter;
+import Triangle.AbstractSyntaxTrees.ReturnCommand;
 
 //RepeatCommand
 import Triangle.AbstractSyntaxTrees.RepeatCommand;
@@ -76,9 +77,19 @@ import Triangle.AbstractSyntaxTrees.Expression;
 //MatchCommand
 import Triangle.AbstractSyntaxTrees.MatchCommand;
 import Triangle.AbstractSyntaxTrees.Case;
+//DeleteCommand
+import Triangle.AbstractSyntaxTrees.DeleteCommand;
 //MatchExpression
 import Triangle.AbstractSyntaxTrees.MatchExpression;
 import Triangle.AbstractSyntaxTrees.CaseExpression;
+import Triangle.AbstractSyntaxTrees.DerefVname;
+import Triangle.AbstractSyntaxTrees.NewExpression;
+
+//Pointer 
+import Triangle.AbstractSyntaxTrees.PointerExpression;
+import Triangle.AbstractSyntaxTrees.PointerLiteral;
+import Triangle.AbstractSyntaxTrees.PointerTypeDenoter;
+import Triangle.AbstractSyntaxTrees.PointerVname;
 
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
 import Triangle.AbstractSyntaxTrees.SequentialDeclaration;
@@ -201,7 +212,26 @@ public class LayoutVisitor implements Visitor {
     attachParent(matchTree, join(matchTree));
     return matchTree;
   }
-  
+// DeleteCommand
+    public Object visitDeleteCommand(DeleteCommand ast, Object obj) {
+      return layoutUnary("DeleteCom.", ast.V);
+    }
+    
+// ReturnCommand
+    public Object visitReturnCommand(ReturnCommand ast, Object obj) {
+      return layoutUnary("ReturnCom.", ast.V);
+    }
+    
+// DerefVname
+    public Object visitDerefVname(DerefVname ast, Object obj) {
+        return layoutUnary("DerefExp.", ast.V);
+    }
+
+// NewExpression
+    public Object visitNewExpression(NewExpression ast, Object obj){
+      return layoutUnary("NewExp.", ast.type);
+    }
+
   //MatchExpression
   public Object visitMatchExpression(MatchExpression ast, Object obj) {
   DrawingTree matchTree = layoutCaption("MatchExp.");
@@ -246,11 +276,34 @@ public class LayoutVisitor implements Visitor {
 
   return matchTree;
   }
+  
+  
     
   // Expressions
   public Object visitArrayExpression(ArrayExpression ast, Object obj) {
     return layoutUnary("ArrayExpr.", ast.AA);
   }
+  
+public Object visitPointerTypeDenoter(PointerTypeDenoter ast, Object obj) {
+    // Suponiendo que un puntero ocupa una palabra
+    return layoutNullary("PointerTypeDenoter<" + ast.T.toString() + ">");
+}
+
+ public Object visitPointerExpression(PointerExpression ast, Object obj) {
+    return layoutUnary("PonterExpress.", ast.PL);
+  }
+ 
+   
+ public Object visitPointerLiteral(PointerLiteral ast, Object obj) {
+    // Suponiendo que un puntero ocupa una palabra
+    return layoutNullary(ast.spelling);
+}
+ 
+  public Object visitPointerVname(PointerVname ast, Object obj) {
+    return layoutUnary("PonterExpress.", ast.I);
+  }
+ 
+  
 
   public Object visitBinaryExpression(BinaryExpression ast, Object obj) {
     return layoutTernary("Bin.Expr.", ast.E1, ast.O, ast.E2);
@@ -667,5 +720,4 @@ public class LayoutVisitor implements Visitor {
 
     return r;
   }
-
 }

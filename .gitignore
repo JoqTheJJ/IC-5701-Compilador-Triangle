@@ -14,3 +14,5 @@
 # Ignorar archivos XML (opcional)
 *.xml
 Compilador de Triangle/Triangle/build/built-jar.properties
+
+*.zip
