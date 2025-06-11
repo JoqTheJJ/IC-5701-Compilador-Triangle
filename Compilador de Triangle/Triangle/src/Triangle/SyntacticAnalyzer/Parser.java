@@ -294,7 +294,7 @@ public class Parser {
         acceptIt();
         Vname vAST = parseVname();
         finish(commandPos);
-        commandAST = new DeleteCommand(vAST, commandPos);
+        commandAST = new ReturnCommand(vAST, commandPos);
     }
         break;
 
@@ -632,6 +632,16 @@ public class Parser {
         }
       }
       break;
+      
+    case Token.HASH:
+        acceptIt();
+        Identifier id = parseIdentifier();
+        Vname base = new SimpleVname(id, id.position);
+        Vname deref = new DerefVname(base, id.position);
+        deref = parseRestOfVname(deref);
+        finish(expressionPos);
+        expressionAST = new VnameExpression(deref, expressionPos);
+        break;
 
     case Token.OPERATOR:
       {
@@ -712,10 +722,24 @@ public class Parser {
 ///////////////////////////////////////////////////////////////////////////////
 
   Vname parseVname () throws SyntaxError {
+    /* //Triangle default parseVname
     Vname vnameAST = null; // in case there's a syntactic error
     Identifier iAST = parseIdentifier();
     vnameAST = parseRestOfVname(iAST);
-    return vnameAST;
+    return vnameAST;*/
+    SourcePosition vnamePos = new SourcePosition();
+    start(vnamePos);
+    if (currentToken.kind == Token.HASH) {
+        acceptIt();
+        Identifier id = parseIdentifier();
+        Vname base = new SimpleVname(id, id.position);
+        finish(vnamePos);
+        Vname deref = new DerefVname(base, vnamePos);
+        return parseRestOfVname(deref);
+    } else{
+        Identifier id = parseIdentifier();
+        return parseRestOfVname(id);
+    }
   }
 
   Vname parseRestOfVname(Identifier identifierAST) throws SyntaxError {
@@ -740,6 +764,27 @@ public class Parser {
     }
     return vAST;
   }
+  
+  Vname parseRestOfVname(Vname base) throws SyntaxError {
+    SourcePosition vnamePos = base.position;
+    Vname vAST = base;
+
+    while (currentToken.kind == Token.DOT || currentToken.kind == Token.LBRACKET) {
+        if (currentToken.kind == Token.DOT) {
+            acceptIt();
+            Identifier iAST = parseIdentifier();
+            vAST = new DotVname(vAST, iAST, vnamePos);
+        } else {
+            acceptIt();
+            Expression eAST = parseExpression();
+            accept(Token.RBRACKET);
+            finish(vnamePos);
+            vAST = new SubscriptVname(vAST, eAST, vnamePos);
+        }
+    }
+
+    return vAST;
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 //
@@ -1068,8 +1113,15 @@ public class Parser {
     case Token.IDENTIFIER:
       {
         Identifier iAST = parseIdentifier();
-        finish(typePos);
-        typeAST = new SimpleTypeDenoter(iAST, typePos);
+        if (iAST.spelling.equals("Pointer")) {
+            TypeDenoter pointedType = parseTypeDenoter();
+            finish(typePos);
+            typeAST = new PointerTypeDenoter(pointedType, typePos);
+            System.out.println("Detecto un puntero con tipo: " + ((PointerTypeDenoter) typeAST).T.toString() + "AAAAAAAAAAAAAAA");
+        } else {
+            finish(typePos);
+            typeAST = new SimpleTypeDenoter(iAST, typePos);
+        }
       }
       break;
 

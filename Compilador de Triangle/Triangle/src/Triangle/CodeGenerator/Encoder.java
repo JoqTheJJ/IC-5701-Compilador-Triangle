@@ -119,6 +119,7 @@ import Triangle.AbstractSyntaxTrees.Case;
 import Triangle.AbstractSyntaxTrees.MatchExpression;
 import Triangle.AbstractSyntaxTrees.CaseExpression;
 import Triangle.AbstractSyntaxTrees.DeleteCommand;
+import Triangle.AbstractSyntaxTrees.DerefVname;
 import Triangle.AbstractSyntaxTrees.NewExpression;
 import Triangle.AbstractSyntaxTrees.PointerExpression;
 import Triangle.AbstractSyntaxTrees.PointerLiteral;
@@ -131,6 +132,7 @@ import Triangle.AbstractSyntaxTrees.PointerLiteral;
 import Triangle.AbstractSyntaxTrees.PointerTypeDenoter;
 import Triangle.AbstractSyntaxTrees.PointerVname;
 import Triangle.AbstractSyntaxTrees.ReturnCommand;
+import Triangle.AbstractSyntaxTrees.TypeDenoter;
 
 public final class Encoder implements Visitor {
 
@@ -368,8 +370,6 @@ public Object visitMatchExpression(MatchExpression ast, Object o) {
         Frame frame = (Frame) o;
         ast.V.visit(this, frame); // Evalúa el puntero a liberar
         
-        //System.out.println("EMIT: op=" + op + ", r=" + r + ", n=" + n + ", d=" + d);
-        //emit(Machine.LOADop, 0, Machine.STr, 0);
         encodeFetch(ast.V, frame, Machine.pointerSize);
         
         emit(Machine.CALLop, 0, Machine.PBr, Machine.heapFreeAddr); // Llama al sistema
@@ -403,8 +403,29 @@ public Object visitMatchExpression(MatchExpression ast, Object o) {
     return Machine.pointerSize;
     }
     
+    //DerefVname
+    public Object visitDerefVname(DerefVname ast, Object o) {
+        Frame frame = (Frame) o;
+        
+        System.out.println("ENTRANDO A DEREF AAAAAAAAAAAAA");
+        
+        encodeFetch(ast.V, frame, Machine.pointerSize);
+        
+        emit(Machine.CALLop, 0, Machine.PBr, Machine.heapDeRefAddr);
+        
+        PointerTypeDenoter ptrType = (PointerTypeDenoter) ast.V.type;
+        TypeDenoter objectType = ptrType.T;
+        
+        int size = ((Integer) objectType.visit(this, null)).intValue();
+        
+        return new UnknownValue(size, 0, 0);
+    }
+    
     public Object visitReturnCommand(ReturnCommand ast, Object o) {
         Frame frame = (Frame) o;
+        
+        System.out.println("AAAAAAAAAAAAA ENTRANDO A RETURN");
+        
         ast.V.visit(this, frame); // Evalúa el puntero a liberar
         
         encodeFetch(ast.V, frame, Machine.pointerSize);

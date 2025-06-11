@@ -82,6 +82,7 @@ import Triangle.AbstractSyntaxTrees.DeleteCommand;
 //MatchExpression
 import Triangle.AbstractSyntaxTrees.MatchExpression;
 import Triangle.AbstractSyntaxTrees.CaseExpression;
+import Triangle.AbstractSyntaxTrees.DerefVname;
 import Triangle.AbstractSyntaxTrees.NewExpression;
 import Triangle.AbstractSyntaxTrees.PointerExpression;
 import Triangle.AbstractSyntaxTrees.PointerLiteral;
@@ -223,6 +224,11 @@ public class LayoutVisitor implements Visitor {
 // ReturnCommand
     public Object visitReturnCommand(ReturnCommand ast, Object obj) {
       return layoutUnary("ReturnCom.", ast.V);
+    }
+    
+// DerefVname
+    public Object visitDerefVname(DerefVname ast, Object obj) {
+        return layoutUnary("DerefExp.", ast.V);
     }
 
 // NewExpression

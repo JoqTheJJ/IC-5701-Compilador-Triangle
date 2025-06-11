@@ -68,6 +68,7 @@ import Triangle.AbstractSyntaxTrees.Case;
 import Triangle.AbstractSyntaxTrees.MatchExpression;
 import Triangle.AbstractSyntaxTrees.CaseExpression;
 import Triangle.AbstractSyntaxTrees.DeleteCommand;
+import Triangle.AbstractSyntaxTrees.DerefVname;
 import Triangle.AbstractSyntaxTrees.NewExpression;
 import Triangle.AbstractSyntaxTrees.PointerExpression;
 import Triangle.AbstractSyntaxTrees.PointerLiteral;
@@ -78,6 +79,7 @@ import Triangle.AbstractSyntaxTrees.PointerExpression;
 import Triangle.AbstractSyntaxTrees.PointerLiteral;
 import Triangle.AbstractSyntaxTrees.PointerTypeDenoter;
 import Triangle.AbstractSyntaxTrees.PointerVname;
+import Triangle.AbstractSyntaxTrees.ReturnCommand;
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
 import Triangle.AbstractSyntaxTrees.SequentialDeclaration;
 import Triangle.AbstractSyntaxTrees.SimpleTypeDenoter;
@@ -220,6 +222,10 @@ public class TreeVisitor implements Visitor {
     //DeleteCommand
     public Object visitDeleteCommand(DeleteCommand ast, Object obj){
        return (createUnary("Delete Command", ast.V));
+    }
+    
+    public Object visitReturnCommand(ReturnCommand ast, Object obj) {
+        return (createUnary("Return Command", ast.V));
     }
     
     //NewExpression
@@ -487,7 +493,11 @@ public class TreeVisitor implements Visitor {
     
     public Object visitPointerVname(PointerVname ast, Object obj) {      
       return(createUnary("PointerVname", ast.I));
-  }
+    }
+    
+    public Object visitDerefVname(DerefVname ast, Object obj) {
+        return(createUnary("DerefVname", ast.V));
+    }
     
     // </editor-fold>
 

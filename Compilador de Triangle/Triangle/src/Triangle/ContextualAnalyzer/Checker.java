@@ -174,6 +174,23 @@ public final class Checker implements Visitor {
     return null;
   }
     
+  //DerefVname
+    public Object visitDerefVname(DerefVname ast, Object o) {
+        TypeDenoter pointerType = (TypeDenoter) ast.V.visit(this, o);
+        
+        if (!(pointerType instanceof PointerTypeDenoter)) {
+            reporter.reportError("Desreferenciación solo es válida sobre punteros", "", ast.position);
+            ast.type = StdEnvironment.errorType;
+            return StdEnvironment.errorType;
+        }
+        
+        TypeDenoter pointedType = ((PointerTypeDenoter) pointerType).T;
+        
+        ast.type = pointedType;
+        
+        return pointedType;
+    }
+    
   //NewCommand
     public Object visitNewExpression(NewExpression ast, Object o) {
     
@@ -807,6 +824,12 @@ public Object visitPointerTypeDenoter(PointerTypeDenoter ast, Object o) {
     ast.type = null;
     TypeDenoter vType = (TypeDenoter) ast.V.visit(this, null);
     ast.variable = ast.V.variable;
+    if (vType instanceof PointerTypeDenoter) {
+        vType = ((PointerTypeDenoter) vType).T;
+        System.out.println("Puntero apunta a tipo: " + vType.toString());
+    } else {
+        System.out.println("No era un puntero :/ era un: " + vType.toString());
+    }
     if (! (vType instanceof RecordTypeDenoter))
       reporter.reportError ("record expected here", "", ast.V.position);
     else {
@@ -1022,7 +1045,7 @@ public Object visitPointerTypeDenoter(PointerTypeDenoter ast, Object o) {
     StdEnvironment.errorType = new ErrorTypeDenoter(dummyPos);
     
     //Pointer ^
-    StdEnvironment.pointerType = new PointerTypeDenoter(dummyPos);
+    StdEnvironment.pointerType = new PointerTypeDenoter(new ErrorTypeDenoter(dummyPos), dummyPos);
     StdEnvironment.pointerDecl = declareStdType("Pointer", StdEnvironment.pointerType);
     StdEnvironment.nilDecl = declareStdConst("nil", StdEnvironment.pointerType);
 

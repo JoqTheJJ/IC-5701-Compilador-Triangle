@@ -520,7 +520,7 @@ public class Interpreter {
           size = data[addr]; // Obtengo el espacio del objeto en memoria
           
           for (int i = 0; i < size; i++) { // Movemos el objeto a la memoria dinamica
-              data[addr + i] = data[ST - size + i];
+              data[addr + i + 1] = data[ST - size + i];
           }
           
           ST = ST - size; // Eliminamos el objeto de la memoria estatica

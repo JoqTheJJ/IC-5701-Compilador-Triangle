@@ -70,6 +70,7 @@ import Triangle.AbstractSyntaxTrees.Case;
 import Triangle.AbstractSyntaxTrees.MatchExpression;
 import Triangle.AbstractSyntaxTrees.CaseExpression;
 import Triangle.AbstractSyntaxTrees.DeleteCommand;
+import Triangle.AbstractSyntaxTrees.DerefVname;
 import Triangle.AbstractSyntaxTrees.NewExpression;
 import Triangle.AbstractSyntaxTrees.PointerExpression;
 import Triangle.AbstractSyntaxTrees.PointerLiteral;
@@ -107,6 +108,7 @@ import Triangle.AbstractSyntaxTrees.PointerExpression;
 import Triangle.AbstractSyntaxTrees.PointerLiteral;
 import Triangle.AbstractSyntaxTrees.PointerTypeDenoter;
 import Triangle.AbstractSyntaxTrees.PointerVname;
+import Triangle.AbstractSyntaxTrees.ReturnCommand;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -234,6 +236,11 @@ public class TableVisitor implements Visitor {
     
     //DeleteCommand
     public Object visitDeleteCommand(DeleteCommand ast, Object obj){
+        ast.V.visit(this, null);
+        return null;
+    }
+    
+    public Object visitReturnCommand(ReturnCommand ast, Object obj) {
         ast.V.visit(this, null);
         return null;
     }
@@ -701,6 +708,11 @@ public class TableVisitor implements Visitor {
       ast.I.visit(this, null);
       
       return(null);
+  }
+  
+  public Object visitDerefVname(DerefVname ast, Object obj) {
+      ast.V.visit(this, null);
+      return null;
   }
   // </editor-fold>
 
