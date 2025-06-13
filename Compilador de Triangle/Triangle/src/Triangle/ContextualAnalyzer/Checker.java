@@ -299,7 +299,7 @@ public Object visitPointerVname(PointerVname ast, Object o) {
 
 
 public Object visitPointerTypeDenoter(PointerTypeDenoter ast, Object o) {
-    ast.T.visit(this, null);
+    //ast.T.visit(this, null);
     return StdEnvironment.pointerType;
 }
 

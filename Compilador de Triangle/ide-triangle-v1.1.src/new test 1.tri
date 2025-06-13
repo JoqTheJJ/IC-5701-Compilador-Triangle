@@ -7,7 +7,7 @@ let
       numeroFavorito : Integer
     end;
 
-  var p1 : Pointer Pointer Gato;
+  var p1 : Pointer Gato;
   var p2 : Pointer Gato;
 
   var michi : Gato
@@ -30,5 +30,6 @@ begin
   store michi ~ p1;
 
   p2 := nil;
-  delete p1;
+  delete p1
+  !delete p2
 end

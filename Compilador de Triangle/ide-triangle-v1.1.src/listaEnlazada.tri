@@ -1,0 +1,31 @@
+let
+  type Nodo ~
+    record 
+      x : Integer,
+      next : Pointer Nodo
+    end;
+
+   var datoNodo : Nodo;
+   var primero : Pointer Nodo
+in
+begin
+   primero := new Nodo;
+
+   datoNodo.x := 3;
+   datoNodo.next := nil;
+   store datoNodo ~ primero;
+
+   
+
+   datoNodo.x := 2;
+   datoNodo.next := primero;
+   primero := new Nodo;
+   store datoNodo ~ primero;
+
+   
+
+   datoNodo.x := 1;
+   datoNodo.next := primero;
+   primero := new Nodo;
+   store datoNodo ~ primero
+end
