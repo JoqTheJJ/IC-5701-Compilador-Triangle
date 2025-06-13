@@ -38,6 +38,10 @@ public interface Visitor {
   // PointerTypeDenoter
   public abstract Object visitPointerTypeDenoter(PointerTypeDenoter ast, Object o);
   
+  //PushCommand
+  public abstract Object visitPushCommand(PushCommand ast, Object o);
+  //StoreCommand
+  public abstract Object visitStoreCommand(StoreCommand ast, Object o);
   
     
 

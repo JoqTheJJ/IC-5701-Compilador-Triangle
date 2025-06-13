@@ -748,6 +748,10 @@ public class Interpreter {
     System.out.println("********** TAM Interpreter (Java Version 2.1) HOLA MUNDO! **********");
     
     pointers.clear();
+    
+    for (int i = 0; i < data.length; i++) {
+        data[i] = 0; //Clear memory
+    }
 
     if (args.length == 1)
       objectName = args[0];
@@ -760,4 +764,6 @@ public class Interpreter {
       showStatus();
     }
   }
+  
+  
 }
