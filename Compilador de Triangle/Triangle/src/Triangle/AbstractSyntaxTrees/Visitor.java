@@ -40,7 +40,8 @@ public interface Visitor {
   
   //PushCommand
   public abstract Object visitPushCommand(PushCommand ast, Object o);
-  
+  //StoreCommand
+  public abstract Object visitStoreCommand(StoreCommand ast, Object o);
   
     
 

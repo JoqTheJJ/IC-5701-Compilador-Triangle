@@ -121,11 +121,6 @@ import Triangle.AbstractSyntaxTrees.CaseExpression;
 import Triangle.AbstractSyntaxTrees.DeleteCommand;
 import Triangle.AbstractSyntaxTrees.DerefVname;
 import Triangle.AbstractSyntaxTrees.NewExpression;
-import Triangle.AbstractSyntaxTrees.PointerExpression;
-import Triangle.AbstractSyntaxTrees.PointerLiteral;
-import Triangle.AbstractSyntaxTrees.PointerTypeDenoter;
-import Triangle.AbstractSyntaxTrees.PointerVname;
-
 //Pointer 
 import Triangle.AbstractSyntaxTrees.PointerExpression;
 import Triangle.AbstractSyntaxTrees.PointerLiteral;
@@ -133,7 +128,9 @@ import Triangle.AbstractSyntaxTrees.PointerTypeDenoter;
 import Triangle.AbstractSyntaxTrees.PointerVname;
 import Triangle.AbstractSyntaxTrees.ReturnCommand;
 import Triangle.AbstractSyntaxTrees.TypeDenoter;
+//Store
 import Triangle.AbstractSyntaxTrees.PushCommand;
+import Triangle.AbstractSyntaxTrees.StoreCommand;
 
 public final class Encoder implements Visitor {
 
@@ -369,11 +366,24 @@ public Object visitMatchExpression(MatchExpression ast, Object o) {
     // PushCommand
     public Object visitPushCommand(PushCommand ast, Object o) {
         Frame frame = (Frame) o;
-        Integer valSize = (Integer) ast.V.visit(this, frame);
+        Integer valSize = ((Integer) ast.V.type.visit(this, null)).intValue();
         
         encodeFetch(ast.V, frame, valSize);
         
         //emit(Machine.CALLop, 0, Machine.PBr, Machine.heapPrint);
+        return null;
+    }
+    
+    // StoreCommand
+    public Object visitStoreCommand(StoreCommand ast, Object o) {
+        Frame frame = (Frame) o;
+        Integer valSize = ((Integer) ast.V.type.visit(this, null)).intValue();
+        encodeFetch(ast.V, frame, valSize);
+        
+        ast.pointer.visit(this, frame);
+        encodeFetch(ast.pointer, frame, Machine.pointerSize);
+        emit(Machine.CALLop, 0, Machine.PBr, Machine.heapStoreOp);
+        emit(Machine.CALLop, 0, Machine.PBr, Machine.heapPrint);
         return null;
     }
 

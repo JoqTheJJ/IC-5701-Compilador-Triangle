@@ -73,8 +73,9 @@ import Triangle.AbstractSyntaxTrees.DeleteCommand;
 import Triangle.AbstractSyntaxTrees.DerefVname;
 import Triangle.AbstractSyntaxTrees.NewExpression;
 
-//PushCommand
+//Memory
 import Triangle.AbstractSyntaxTrees.PushCommand;
+import Triangle.AbstractSyntaxTrees.StoreCommand;
 
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
 import Triangle.AbstractSyntaxTrees.SequentialDeclaration;
@@ -656,6 +657,12 @@ public class TableVisitor implements Visitor {
   
   public Object visitPushCommand(PushCommand ast, Object obj) { 
       ast.V.visit(this, null);
+      return(null);
+  }
+  
+  public Object visitStoreCommand(StoreCommand ast, Object obj) { 
+      ast.V.visit(this, null);
+      ast.pointer.visit(this, null);
       return(null);
   }
   

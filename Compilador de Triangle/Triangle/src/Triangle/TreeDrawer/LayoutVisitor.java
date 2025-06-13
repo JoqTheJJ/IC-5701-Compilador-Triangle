@@ -90,6 +90,8 @@ import Triangle.AbstractSyntaxTrees.PointerExpression;
 import Triangle.AbstractSyntaxTrees.PointerLiteral;
 import Triangle.AbstractSyntaxTrees.PointerTypeDenoter;
 import Triangle.AbstractSyntaxTrees.PointerVname;
+//StoreCommand
+import Triangle.AbstractSyntaxTrees.StoreCommand;
 import Triangle.AbstractSyntaxTrees.PushCommand;
 
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
@@ -297,18 +299,24 @@ public Object visitPointerTypeDenoter(PointerTypeDenoter ast, Object obj) {
    
  public Object visitPointerLiteral(PointerLiteral ast, Object obj) {
     // Suponiendo que un puntero ocupa una palabra
-    return layoutNullary(ast.spelling);
+    return layoutNullary("nil");
 }
  
   public Object visitPointerVname(PointerVname ast, Object obj) {
-    return layoutUnary("PonterExpress.", ast.I);
+    return layoutUnary("PointerExpress.", ast.I);
   }
   
   public Object visitPushCommand(PushCommand ast, Object obj) {
       return layoutUnary("PushCommand.", ast.V);
   }
- 
   
+  public Object visitStoreCommand(StoreCommand ast, Object obj) {
+      return layoutBinary("StoreCommand.", ast.V, ast.pointer);
+  }
+
+
+
+
   public Object visitBinaryExpression(BinaryExpression ast, Object obj) {
     return layoutTernary("Bin.Expr.", ast.E1, ast.O, ast.E2);
   }

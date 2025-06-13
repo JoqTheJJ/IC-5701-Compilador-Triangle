@@ -307,6 +307,16 @@ public class Parser {
     }
         break;
 
+    case Token.STORE:
+    {
+        acceptIt();
+        Vname vAST = parseVname();
+        accept(Token.IS);
+        Vname pointer = parseVname();
+        finish(commandPos);
+        commandAST = new StoreCommand(vAST, pointer, commandPos);
+    }
+        break;
 
 
     case Token.WHILE:

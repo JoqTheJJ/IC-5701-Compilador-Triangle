@@ -21,8 +21,13 @@ begin
   michi.edad := 20;
   michi.numeroFavorito := 7;
 
-  push michi;
-  return p2;
+  store michi ~ p2;
+
+  michi.inicial := 'i';
+  michi.edad := 10;
+  michi.numeroFavorito := 8;
+
+  store michi ~ p1;
 
   p2 := nil;
   delete p1;
