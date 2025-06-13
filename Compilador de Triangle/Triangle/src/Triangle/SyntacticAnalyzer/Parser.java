@@ -297,6 +297,17 @@ public class Parser {
         commandAST = new ReturnCommand(vAST, commandPos);
     }
         break;
+        
+    case Token.PUSH:
+    {
+        acceptIt();
+        Vname vAST = parseVname();
+        finish(commandPos);
+        commandAST = new PushCommand(vAST, commandPos);
+    }
+        break;
+
+
 
     case Token.WHILE:
       {

@@ -90,6 +90,7 @@ import Triangle.AbstractSyntaxTrees.PointerExpression;
 import Triangle.AbstractSyntaxTrees.PointerLiteral;
 import Triangle.AbstractSyntaxTrees.PointerTypeDenoter;
 import Triangle.AbstractSyntaxTrees.PointerVname;
+import Triangle.AbstractSyntaxTrees.PushCommand;
 
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
 import Triangle.AbstractSyntaxTrees.SequentialDeclaration;
@@ -302,9 +303,12 @@ public Object visitPointerTypeDenoter(PointerTypeDenoter ast, Object obj) {
   public Object visitPointerVname(PointerVname ast, Object obj) {
     return layoutUnary("PonterExpress.", ast.I);
   }
+  
+  public Object visitPushCommand(PushCommand ast, Object obj) {
+      return layoutUnary("PushCommand.", ast.V);
+  }
  
   
-
   public Object visitBinaryExpression(BinaryExpression ast, Object obj) {
     return layoutTernary("Bin.Expr.", ast.E1, ast.O, ast.E2);
   }

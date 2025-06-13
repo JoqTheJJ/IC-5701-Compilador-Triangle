@@ -133,6 +133,7 @@ import Triangle.AbstractSyntaxTrees.PointerTypeDenoter;
 import Triangle.AbstractSyntaxTrees.PointerVname;
 import Triangle.AbstractSyntaxTrees.ReturnCommand;
 import Triangle.AbstractSyntaxTrees.TypeDenoter;
+import Triangle.AbstractSyntaxTrees.PushCommand;
 
 public final class Encoder implements Visitor {
 
@@ -364,6 +365,17 @@ public Object visitMatchExpression(MatchExpression ast, Object o) {
     emit(Machine.LOADop, 0, Machine.LBr, frame.size);
     return Integer.valueOf(1);
 }
+
+    // PushCommand
+    public Object visitPushCommand(PushCommand ast, Object o) {
+        Frame frame = (Frame) o;
+        Integer valSize = (Integer) ast.V.visit(this, frame);
+        
+        encodeFetch(ast.V, frame, valSize);
+        
+        //emit(Machine.CALLop, 0, Machine.PBr, Machine.heapPrint);
+        return null;
+    }
 
     // DeleteCommand
     public Object visitDeleteCommand(DeleteCommand ast, Object o) {

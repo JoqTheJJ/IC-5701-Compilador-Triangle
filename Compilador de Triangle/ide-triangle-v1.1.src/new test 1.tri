@@ -1,18 +1,29 @@
 let
-  var p1 : Pointer Pointer Gato;
-  var p2 : Pointer Gato;
   
   type Gato ~
     record
       inicial : Char,
       edad : Integer,
       numeroFavorito : Integer
-    end
+    end;
+
+  var p1 : Pointer Pointer Gato;
+  var p2 : Pointer Gato;
+
+  var michi : Gato
+
 in
 begin
   p1 := new Gato;
   p2 := new Gato;
-  p1 := p2;
+
+  michi.inicial := 'm';
+  michi.edad := 20;
+  michi.numeroFavorito := 7;
+
+  push michi;
+  return p2;
+
   p2 := nil;
   delete p1;
 end

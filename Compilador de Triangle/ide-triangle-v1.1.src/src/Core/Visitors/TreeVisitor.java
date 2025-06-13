@@ -71,6 +71,9 @@ import Triangle.AbstractSyntaxTrees.DeleteCommand;
 import Triangle.AbstractSyntaxTrees.DerefVname;
 import Triangle.AbstractSyntaxTrees.NewExpression;
 
+//PushCommand
+import Triangle.AbstractSyntaxTrees.PushCommand;
+
 import Triangle.AbstractSyntaxTrees.PointerExpression;
 import Triangle.AbstractSyntaxTrees.PointerLiteral;
 import Triangle.AbstractSyntaxTrees.PointerTypeDenoter;
@@ -442,7 +445,11 @@ public class TreeVisitor implements Visitor {
     
     public Object visitPointerTypeDenoter(PointerTypeDenoter ast, Object obj) { 
       return(createNullary("PointerTypeDenoter<" + ast.T.toString() + ">"));
-  }
+    }
+    
+    public Object visitPushCommand(PushCommand ast, Object obj) { 
+      return(createUnary("visitPushCommand", ast.V));
+    }
     
     // </editor-fold>
     

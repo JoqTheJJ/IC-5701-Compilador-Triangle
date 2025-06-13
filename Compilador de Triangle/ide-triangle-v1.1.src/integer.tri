@@ -1,0 +1,12 @@
+let
+  var p : Pointer Integer;
+  var x : Integer
+in
+begin
+  p := new Integer;
+
+  x := 4;
+
+  push x;
+  return p
+end

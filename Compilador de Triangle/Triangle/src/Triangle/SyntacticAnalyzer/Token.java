@@ -89,37 +89,38 @@ final class Token extends Object {
     OF			= 23,
     OTHERWISE           = 24, //otherwise
     PROC		= 25,
-    RECORD		= 26,
-    REPEAT              = 27, //repeat
-    RETURN              = 28, //return
-    THEN		= 29,
-    TO                  = 30, //to
-    TYPE		= 31,
-    UNTIL               = 32, //until 
-    VAR			= 33,
-    WHILE		= 34,
+    PUSH                = 26, //push
+    RECORD		= 27,
+    REPEAT              = 28, //repeat
+    RETURN              = 29, //return
+    THEN		= 30,
+    TO                  = 31, //to
+    TYPE		= 32,
+    UNTIL               = 33, //until 
+    VAR			= 34,
+    WHILE		= 35,
 
     // punctuation...
-    DOT			= 35,
-    COLON		= 36,
-    SEMICOLON           = 37,
-    COMMA		= 38,
-    BECOMES		= 39,
-    IS			= 40,
-    CARET               = 41, //caret
-    HASH                = 42, //hash AAAAA
+    DOT			= 36,
+    COLON		= 37,
+    SEMICOLON           = 38,
+    COMMA		= 39,
+    BECOMES		= 40,
+    IS			= 41,
+    CARET               = 42, //caret
+    HASH                = 43, //hash AAAAA
     
     // brackets...
-    LPAREN		= 43,
-    RPAREN		= 44,
-    LBRACKET	        = 45,
-    RBRACKET	        = 46,
-    LCURLY		= 47,
-    RCURLY		= 48,
+    LPAREN		= 44,
+    RPAREN		= 45,
+    LBRACKET	        = 46,
+    RBRACKET	        = 47,
+    LCURLY		= 48,
+    RCURLY		= 49,
 
     // special tokens...
-    EOT			= 49,
-    ERROR		= 50;
+    EOT			= 50,
+    ERROR		= 51;
 
   private static String[] tokenTable = new String[] {
     "<int>",
@@ -148,6 +149,7 @@ final class Token extends Object {
     "of",
     "otherwise", //otherwise
     "proc",
+    "push", //push
     "record",
     "repeat", //repeat
     "return", //return

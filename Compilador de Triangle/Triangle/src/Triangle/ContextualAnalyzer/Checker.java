@@ -161,6 +161,12 @@ public final class Checker implements Visitor {
   return null;
   }
   
+  //PushCommand
+    public Object visitPushCommand(PushCommand ast, Object o) {
+        TypeDenoter vType = (TypeDenoter) ast.V.visit(this, null);
+        return null;
+    }
+  
   //DeleteCommand
     public Object visitDeleteCommand(DeleteCommand ast, Object o) {
   // Verifica que la variable exista y obtén su tipo
